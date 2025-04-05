@@ -22,6 +22,9 @@ public class AuthRepository {
         void onSuccess();
         void onFailure(Exception e);
     }
+    public interface LogoutCallback {
+        void onLogout();
+    }
 
     public void login(String email, String password, AuthCallback callback) {
         auth.signInWithEmailAndPassword(email, password)
@@ -68,7 +71,11 @@ public class AuthRepository {
                 .addOnFailureListener(callback::onFailure);
     }
 
-    public void logout() {
+    public void logout(LogoutCallback callback) {
         auth.signOut();
+
+        if (callback != null) {
+            callback.onLogout();
+        }
     }
 }

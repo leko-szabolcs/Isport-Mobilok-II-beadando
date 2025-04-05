@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -18,6 +19,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import beadando.isports_app.data.repostiory.AuthRepository;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,6 +69,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.action_logout) {
+            new AuthRepository().logout(() -> {
+                Toast.makeText(this, "Sikeres kijelentkezés", Toast.LENGTH_SHORT).show();
+                navController.popBackStack(R.id.loginFragment, false);
+                navController.navigate(R.id.loginFragment);
+            });
+        }
+
         return NavigationUI.onNavDestinationSelected(item, navController)
                 || super.onOptionsItemSelected(item);
     }
@@ -79,4 +93,6 @@ public class MainActivity extends AppCompatActivity {
             globalProgressBar.setVisibility(View.GONE);
         }
     }
+
+
 }
