@@ -61,6 +61,21 @@ public class InputValidator {
                 && doPasswordsMatch(context, password, confirmPassword);
     }
 
+    public static boolean isValidEmailLogin(Context context, String email) {
+        if (email.isEmpty()) {
+            toast(context, "Az email mező nem lehet üres");
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isLoginValid(Context context, String email, String password) {
+        return isValidEmail(context, email)
+                && isValidPassword(context, password)
+                && isValidEmailLogin(context, email);
+    }
+
+
     private static void toast(Context context, String msg) {
         android.widget.Toast.makeText(context, msg, android.widget.Toast.LENGTH_SHORT).show();
     }

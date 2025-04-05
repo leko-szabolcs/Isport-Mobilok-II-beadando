@@ -1,6 +1,5 @@
 package beadando.isports_app.fragments;
 
-import android.util.Patterns;
 import android.widget.EditText;
 
 import beadando.isports_app.util.InputValidator;
@@ -10,13 +9,13 @@ import beadando.isports_app.util.InputValidator;
  * - Validálja az adatokat
  * - Lekéri őket
  */
-public class AuthAdapter {
+public class RegisterAdapter {
 
     private final EditText etEmail;
     private final EditText etPassword;
     private final EditText etConfirmPassword;
 
-    public AuthAdapter(EditText etEmail, EditText etPassword, EditText etConfirmPassword) {
+    public RegisterAdapter(EditText etEmail, EditText etPassword, EditText etConfirmPassword) {
         this.etEmail = etEmail;
         this.etPassword = etPassword;
         this.etConfirmPassword = etConfirmPassword;
@@ -38,15 +37,4 @@ public class AuthAdapter {
         return InputValidator.isRegistrationValid(context, getEmail(), getPassword(), getConfirmPassword());
     }
 
-    public boolean isValidLogin(android.content.Context context) {
-        if (getEmail().isEmpty() || getPassword().isEmpty()) {
-            toast(context, "Töltsd ki az emailt és jelszót");
-            return false;
-        }
-        return true;
-    }
-
-    private void toast(android.content.Context context, String msg) {
-        android.widget.Toast.makeText(context, msg, android.widget.Toast.LENGTH_SHORT).show();
-    }
 }

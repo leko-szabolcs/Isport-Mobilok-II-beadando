@@ -21,7 +21,7 @@ import beadando.isports_app.MainActivity;
 public class RegisterFragment extends Fragment {
 
     private AuthRepository auth;
-    private AuthAdapter formAdapter;
+    private RegisterAdapter formAdapter;
 
     @Nullable
     @Override
@@ -34,7 +34,7 @@ public class RegisterFragment extends Fragment {
         EditText etPassword = view.findViewById(R.id.etPassword);
         EditText etPasswordAgain = view.findViewById(R.id.etPasswordAgain);
 
-        formAdapter = new AuthAdapter(etUsername, etPassword, etPasswordAgain);
+        formAdapter = new RegisterAdapter(etUsername, etPassword, etPasswordAgain);
 
         view.findViewById(R.id.btnRegister).setOnClickListener(v ->{
             if (!formAdapter.isValidRegistration(getContext())) return;
