@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -21,13 +23,16 @@ public class MainActivity extends AppCompatActivity {
 
     private NavController navController;
     private AppBarConfiguration appBarConfiguration;
+    private FrameLayout loadingOverlay;
+    private ProgressBar globalProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Toolbar mainToolbar = findViewById(R.id.navToolbar);
+        loadingOverlay = findViewById(R.id.loadingOverlay);
+        globalProgressBar = findViewById(R.id.globalProgressBar);
         setSupportActionBar(mainToolbar);
 
         setTitle("Navigation app");
@@ -63,5 +68,15 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return NavigationUI.onNavDestinationSelected(item, navController)
                 || super.onOptionsItemSelected(item);
+    }
+
+    public void showLoading(boolean show) {
+        if (show) {
+            loadingOverlay.setVisibility(View.VISIBLE);
+            globalProgressBar.setVisibility(View.VISIBLE);
+        } else {
+            loadingOverlay.setVisibility(View.GONE);
+            globalProgressBar.setVisibility(View.GONE);
+        }
     }
 }
