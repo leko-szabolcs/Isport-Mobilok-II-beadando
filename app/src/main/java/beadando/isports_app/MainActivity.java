@@ -21,6 +21,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import beadando.isports_app.data.repostiory.AuthRepository;
+import beadando.isports_app.util.SessionManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,6 +40,14 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mainToolbar);
 
         setTitle("Navigation app");
+
+        SessionManager sessionManager = new SessionManager(this);
+        if (sessionManager.isLoggedIn()) {
+            NavHostFragment navHostFragment =
+                    (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+            navController = navHostFragment.getNavController();
+            navController.navigate(R.id.mainFragment);
+        }
 
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager()
@@ -74,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (itemId == R.id.action_logout) {
             new AuthRepository().logout(() -> {
+                new SessionManager(this).clearSession();
                 Toast.makeText(this, "Sikeres kijelentkezés", Toast.LENGTH_SHORT).show();
                 navController.popBackStack(R.id.loginFragment, false);
                 navController.navigate(R.id.loginFragment);

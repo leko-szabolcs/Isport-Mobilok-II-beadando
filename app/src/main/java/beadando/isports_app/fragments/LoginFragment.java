@@ -17,6 +17,7 @@ import beadando.isports_app.MainActivity;
 import beadando.isports_app.R;
 import beadando.isports_app.data.repostiory.AuthRepository;
 import beadando.isports_app.domain.User;
+import beadando.isports_app.util.SessionManager;
 
 public class LoginFragment extends Fragment {
     @Nullable
@@ -41,6 +42,7 @@ public class LoginFragment extends Fragment {
                 @Override
                 public void onSuccess(User user) {
                     ((MainActivity) requireActivity()).showLoading(false);
+                    new SessionManager(requireActivity().getApplicationContext()).setLoggedIn(true);
                     Toast.makeText(getContext(), "Sikeres bejelentkezés", Toast.LENGTH_SHORT).show();
                     Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_mainFragment);
                 }
