@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "473587261432",
+    "project_id": "isport-62693",
+    "storage_bucket": "isport-62693.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:473587261432:android:9d63d6df4b4edb9aa1800d",
+        "android_client_info": {
+          "package_name": "beadando.isports_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxrV25WjxYeutLnOUBILvLseRI53U49UA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
