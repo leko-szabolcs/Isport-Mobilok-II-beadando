@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">ISport_app</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="felhasznalonev">Felhasználónév</string>
+    <string name="vezeteknev">Vezetéknév</string>
+    <string name="kor">Kor</string>
+    <string name="leiras">Leírás</string>
+    <string name="szerkesztes">Szerkesztés</string>
+    <string name="kijelentkezes">Kijelentkezés</string>
+    <string name="profile_picture">Profilkép</string>
 </resources>
