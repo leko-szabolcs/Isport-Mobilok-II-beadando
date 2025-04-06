@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -17,20 +20,34 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import beadando.isports_app.data.repostiory.AuthRepository;
+import beadando.isports_app.util.SessionManager;
+
 public class MainActivity extends AppCompatActivity {
 
     private NavController navController;
     private AppBarConfiguration appBarConfiguration;
+    private FrameLayout loadingOverlay;
+    private ProgressBar globalProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Toolbar mainToolbar = findViewById(R.id.navToolbar);
+        loadingOverlay = findViewById(R.id.loadingOverlay);
+        globalProgressBar = findViewById(R.id.globalProgressBar);
         setSupportActionBar(mainToolbar);
 
         setTitle("Navigation app");
+
+        SessionManager sessionManager = new SessionManager(this);
+        if (sessionManager.isLoggedIn()) {
+            NavHostFragment navHostFragment =
+                    (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+            navController = navHostFragment.getNavController();
+            navController.navigate(R.id.mainFragment);
+        }
 
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager()
@@ -61,7 +78,31 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.action_logout) {
+            new AuthRepository().logout(() -> {
+                new SessionManager(this).clearSession();
+                Toast.makeText(this, "Sikeres kijelentkezés", Toast.LENGTH_SHORT).show();
+                navController.popBackStack(R.id.loginFragment, false);
+                navController.navigate(R.id.loginFragment);
+            });
+        }
+
         return NavigationUI.onNavDestinationSelected(item, navController)
                 || super.onOptionsItemSelected(item);
     }
+
+    public void showLoading(boolean show) {
+        if (show) {
+            loadingOverlay.setVisibility(View.VISIBLE);
+            globalProgressBar.setVisibility(View.VISIBLE);
+        } else {
+            loadingOverlay.setVisibility(View.GONE);
+            globalProgressBar.setVisibility(View.GONE);
+        }
+    }
+
+
 }

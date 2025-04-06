@@ -12,8 +12,8 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/registerFragment"
-        android:title="Regisztráció"
+        android:id="@+id/action_logout"
+        android:title="Kijelentkezés"
         app:showAsAction="never" />
 
 </menu>
