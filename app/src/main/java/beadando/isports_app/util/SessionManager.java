@@ -29,7 +29,6 @@ public class SessionManager {
     private static final String KEY_USER_USERNAME = "user_username";
     private static final String KEY_USER_SEARCH_NAME = "user_search_name";
 
-    // Save user data to SharedPreferences
     public void saveUser(User user) {
         if (user != null) {
             editor.putString(KEY_USER_UID, user.getUid());
@@ -40,20 +39,16 @@ public class SessionManager {
         }
     }
 
-    // Get user data from SharedPreferences
     public User getUser() {
         String uid = prefs.getString(KEY_USER_UID, null);
         String email = prefs.getString(KEY_USER_EMAIL, null);
         String username = prefs.getString(KEY_USER_USERNAME, null);
         String searchName = prefs.getString(KEY_USER_SEARCH_NAME, null);
 
-        // If no UID is stored, return null
         if (uid == null) {
             return null;
         }
 
-        // Create a new User object with the stored data
-        // Note: Timestamp objects are set to null as they aren't stored in SharedPreferences
         return new User(uid, email, username, searchName, null, null);
     }
 

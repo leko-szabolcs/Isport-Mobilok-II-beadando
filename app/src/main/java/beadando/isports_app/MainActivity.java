@@ -44,15 +44,13 @@ public class MainActivity extends AppCompatActivity {
         loadingOverlay = findViewById(R.id.loadingOverlay);
         globalProgressBar = findViewById(R.id.globalProgressBar);
 
-        // Set up custom toolbar elements
         profileImageView = mainToolbar.findViewById(R.id.profileImageView);
         toolbarTitle = mainToolbar.findViewById(R.id.toolbarTitle);
         addEventButton = mainToolbar.findViewById(R.id.addEventButton);
 
         setSupportActionBar(mainToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false); // Hide default title
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        // Check if user is logged in
         SessionManager sessionManager = new SessionManager(this);
         if (sessionManager.isLoggedIn()) {
             NavHostFragment navHostFragment =
@@ -70,60 +68,49 @@ public class MainActivity extends AppCompatActivity {
                 R.id.mainFragment
         ).build();
 
-        // Set up click listeners for profile button
         if (profileImageView != null) {
             profileImageView.setOnClickListener(v -> {
-                // Navigate to profile fragment
                 navController.navigate(R.id.profileFragment);
             });
         }
 
-        // Hide toolbar on login & register screens and update title and buttons for other destinations
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.loginFragment || destination.getId() == R.id.registerFragment) {
                 mainToolbar.setVisibility(View.GONE);
             } else {
                 mainToolbar.setVisibility(View.VISIBLE);
 
-                // Update toolbar title based on destination
                 if (toolbarTitle != null) {
                     if (destination.getId() == R.id.mainFragment) {
-                        toolbarTitle.setText("ISport");
+                        toolbarTitle.setText("Események");
                     } else if (destination.getId() == R.id.profileFragment) {
-                        toolbarTitle.setText("Profile");
+                        toolbarTitle.setText("Profil");
                     } else if (destination.getId() == R.id.addEventFragment) {
-                        toolbarTitle.setText("New Event");
+                        toolbarTitle.setText("Új esemény");
+                    } else if (destination.getId() == R.id.editProfileFragment) {
+                        toolbarTitle.setText("Profil szerkesztés");
                     } else {
-                        // Default title or get from destination label
                         toolbarTitle.setText(destination.getLabel());
                     }
                 }
 
-                // Show/hide profile image based on destination
                 if (profileImageView != null) {
-                    if (destination.getId() == R.id.profileFragment || destination.getId() == R.id.addEventFragment) {
-                        // Hide profile image on Profile and AddEvent fragments
+                    if (destination.getId() == R.id.profileFragment || destination.getId() == R.id.addEventFragment || destination.getId() == R.id.editProfileFragment) {
                         profileImageView.setVisibility(View.INVISIBLE);
                     } else {
-                        // Show profile image on other fragments
                         profileImageView.setVisibility(View.VISIBLE);
                     }
                 }
 
-                // Change addEventButton icon and behavior based on destination
                 if (addEventButton != null) {
-                    if (destination.getId() == R.id.profileFragment || destination.getId() == R.id.addEventFragment) {
-                        // Change to back arrow for Profile and AddEvent fragments
+                    if (destination.getId() == R.id.profileFragment || destination.getId() == R.id.addEventFragment || destination.getId() == R.id.editProfileFragment) {
                         addEventButton.setImageResource(R.drawable.ic_back);
                         addEventButton.setOnClickListener(v -> {
-                            // Navigate back to main fragment
                             navController.navigate(R.id.mainFragment);
                         });
                     } else {
-                        // Use plus icon for main fragment
                         addEventButton.setImageResource(R.drawable.ic_plus);
                         addEventButton.setOnClickListener(v -> {
-                            // Navigate to new event fragment
                             navController.navigate(R.id.addEventFragment);
                         });
                     }

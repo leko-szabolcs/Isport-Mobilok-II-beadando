@@ -8,4 +8,8 @@
     <string name="szerkesztes">Szerkesztés</string>
     <string name="kijelentkezes">Kijelentkezés</string>
     <string name="profile_picture">Profilkép</string>
+    <string name="enter_name">Add meg a neved</string>
+    <string name="enter_age">Add meg a korod</string>
+    <string name="enter_description">Add meg a leírást</string>
+    <string name="save_changes">Mentés</string>
 </resources>

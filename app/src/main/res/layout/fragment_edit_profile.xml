@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/labelName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/vezeteknev"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/nameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_input"
+        android:elevation="4dp"
+        android:hint="@string/enter_name"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:padding="16dp"
+        android:textColor="@color/black"
+        android:textColorHint="#615656"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelName" />
+
+    <TextView
+        android:id="@+id/labelAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/kor"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameEditText"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:id="@+id/ageEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_input"
+        android:elevation="4dp"
+        android:hint="@string/enter_age"
+        android:inputType="number"
+        android:minHeight="48dp"
+        android:padding="16dp"
+        android:textColor="@color/black"
+        android:textColorHint="#615656"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelAge" />
+
+    <TextView
+        android:id="@+id/labelDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/leiras"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ageEditText"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:id="@+id/descriptionEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_input"
+        android:elevation="4dp"
+        android:gravity="top"
+        android:hint="@string/enter_description"
+        android:inputType="textMultiLine"
+        android:minLines="5"
+        android:padding="16dp"
+        android:textColor="@color/black"
+        android:textColorHint="#615656"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelDescription" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@android:color/black"
+        android:elevation="10dp"
+        android:padding="12dp"
+        android:text="@string/save_changes"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:backgroundTint="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionEditText"
+        app:layout_constraintVertical_bias="0.85" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
