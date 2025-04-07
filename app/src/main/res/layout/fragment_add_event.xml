@@ -4,17 +4,162 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.AddEventFragment">
+    android:background="@drawable/background"
+    android:padding="24dp">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/etTitle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="332dp"
-        android:layout_marginBottom="380dp"
-        android:text="Hozzáadás"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/rounded_input"
+        android:elevation="4dp"
+        android:hint="Cím megadása"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:padding="16dp"
+        android:textColor="@color/black"
+        android:textColorHint="#615656"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinnerType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_input"
+        android:elevation="4dp"
+        android:minHeight="48dp"
+        android:padding="16dp"
+        android:spinnerMode="dropdown"
+        android:hint="Típus"
+        android:textColor="@color/black"
+        android:textColorHint="#615656"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etTitle" />
+
+    <EditText
+        android:id="@+id/etLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_input"
+        android:elevation="4dp"
+        android:hint="Helyszín megadása"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:padding="16dp"
+        android:textColor="@color/black"
+        android:textColorHint="#615656"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerType" />
+
+    <EditText
+        android:id="@+id/etDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_input"
+        android:drawableEnd="@drawable/ic_calendar"
+        android:elevation="4dp"
+        android:focusable="false"
+        android:hint="Időpont választása"
+        android:inputType="none"
+        android:minHeight="48dp"
+        android:padding="16dp"
+        android:textColor="@color/black"
+        android:textColorHint="#615656"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etLocation" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupFeeType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etDate">
+
+        <RadioButton
+            android:id="@+id/radioFree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ingyenes"
+            android:textColor="@color/black"
+            android:buttonTint="@color/black" />
+
+        <RadioButton
+            android:id="@+id/radioPaid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Fizetős"
+            android:textColor="@color/black"
+            android:buttonTint="@color/black" />
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/etParticipants"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_input"
+        android:elevation="4dp"
+        android:hint="Max létszám"
+        android:inputType="number"
+        android:minWidth="120dp"
+        android:minHeight="48dp"
+        android:padding="16dp"
+        android:textColor="@color/black"
+        android:textColorHint="#615656"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etDate" />
+
+    <EditText
+        android:id="@+id/etDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_input"
+        android:elevation="4dp"
+        android:gravity="top"
+        android:hint="Leírás"
+        android:inputType="textMultiLine"
+        android:minHeight="120dp"
+        android:minLines="5"
+        android:padding="16dp"
+        android:textColor="@color/black"
+        android:textColorHint="#615656"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupFeeType" />
+
+    <Button
+        android:id="@+id/btnUpload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_button"
+        android:elevation="4dp"
+        android:padding="12dp"
+        android:text="Feltöltés"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:backgroundTint="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etDescription" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

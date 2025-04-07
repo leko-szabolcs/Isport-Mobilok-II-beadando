@@ -37,7 +37,11 @@
         android:id="@+id/addEventFragment"
         android:name="beadando.isports_app.fragments.AddEventFragment"
         android:label="fragment_add_event"
-        tools:layout="@layout/fragment_add_event" />
+        tools:layout="@layout/fragment_add_event" >
+        <action
+            android:id="@+id/action_addEventFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="beadando.isports_app.fragments.ProfileFragment"
@@ -50,7 +54,11 @@
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="beadando.isports_app.fragments.EditProfileFragment"
-        android:label="Edit Profile" />
+        android:label="Edit Profile" >
+        <action
+            android:id="@+id/action_editProfileFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
 
 
 </navigation>
