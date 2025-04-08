@@ -15,26 +15,23 @@ import android.widget.Button;
 
 import beadando.isports_app.R;
 
-public class MainFragment extends Fragment {
+public class EventFragment extends Fragment {
 
-    private Button testBtn;
-
+    private Button joinBtn;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        return inflater.inflate(R.layout.fragment_event, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        testBtn = view.findViewById(R.id.btnTest);
+        joinBtn = view.findViewById(R.id.btnJoin);
 
-        testBtn.setOnClickListener(v -> {
+        joinBtn.setOnClickListener(v -> {
             NavController navController = NavHostFragment.findNavController(this);
-            navController.navigate(R.id.action_mainFragment_to_eventFragment);
+            navController.navigate(R.id.action_eventFragment_to_mainFragment);
         });
     }
-
-
 }

@@ -6,15 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".fragments.MainFragment">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="332dp"
-        android:layout_marginBottom="380dp"
-        android:text="Main"
+    <Button
+        android:id="@+id/btnTest"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@android:color/black"
+        android:elevation="10dp"
+        android:padding="12dp"
+        android:text="Esemény"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:backgroundTint="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

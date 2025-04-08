@@ -9,7 +9,11 @@
         android:id="@+id/mainFragment"
         android:name="beadando.isports_app.fragments.MainFragment"
         android:label="Főoldal"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_eventFragment"
+            app:destination="@id/eventFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/loginFragment"
@@ -58,6 +62,14 @@
         <action
             android:id="@+id/action_editProfileFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventFragment"
+        android:name="beadando.isports_app.fragments.EventFragment"
+        android:label="EventFragment" >
+        <action
+            android:id="@+id/action_eventFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
 
 
