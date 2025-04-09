@@ -4,24 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.MainFragment">
+    android:background="@drawable/background"
+    android:padding="16dp">
 
-    <Button
-        android:id="@+id/btnTest"
-        android:layout_width="120dp"
-        android:layout_height="60dp"
-        android:background="@drawable/rounded_button"
-        android:backgroundTint="@android:color/black"
-        android:elevation="10dp"
+
+    <Spinner
+        android:id="@+id/spinnerEventType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_input"
+        android:elevation="4dp"
+        android:minHeight="48dp"
         android:padding="12dp"
-        android:text="Esemény"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:backgroundTint="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:spinnerMode="dropdown"
+        android:textColor="@color/black"
+        android:textColorHint="#615656"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewEvents"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerEventType"
+        tools:listitem="@layout/item_event" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

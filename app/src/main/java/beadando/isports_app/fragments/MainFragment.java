@@ -17,7 +17,6 @@ import beadando.isports_app.R;
 
 public class MainFragment extends Fragment {
 
-    private Button testBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,12 +27,6 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        testBtn = view.findViewById(R.id.btnTest);
-
-        testBtn.setOnClickListener(v -> {
-            NavController navController = NavHostFragment.findNavController(this);
-            navController.navigate(R.id.action_mainFragment_to_eventFragment);
-        });
     }
 
 
