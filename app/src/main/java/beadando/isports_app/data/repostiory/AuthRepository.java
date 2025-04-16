@@ -1,14 +1,11 @@
 package beadando.isports_app.data.repostiory;
 
-import android.content.Context;
-
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import beadando.isports_app.domain.User;
-import beadando.isports_app.util.SessionManager;
 
 public class AuthRepository {
     private final FirebaseAuth auth;

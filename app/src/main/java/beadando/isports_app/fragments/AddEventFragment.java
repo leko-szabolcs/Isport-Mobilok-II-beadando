@@ -7,34 +7,55 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.se.omapi.Session;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.google.firebase.Timestamp;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import beadando.isports_app.MainActivity;
 import beadando.isports_app.R;
+import beadando.isports_app.databinding.FragmentAddEventBinding;
+import beadando.isports_app.domain.Event;
+import beadando.isports_app.domain.User;
+import beadando.isports_app.util.SessionManager;
+import beadando.isports_app.util.validation.EventValidator;
 
 public class AddEventFragment extends Fragment {
-
-    private EditText etDate;
+    private AddEventViewModel addEventViewModel;
+    private FragmentAddEventBinding binding;
     private Calendar calendar;
+    private SessionManager sessionManager;
+    private EventValidator eventValidator;
 
-    private Button btnUpload;
-
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_add_event, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentAddEventBinding.inflate(inflater, container, false);
+        addEventViewModel = new ViewModelProvider(requireActivity()).get(AddEventViewModel.class);
+        sessionManager = new SessionManager(requireActivity());
+        eventValidator = new EventValidator();
+
+        addEventViewModel.isLoading.observe(getViewLifecycleOwner(), this::handleLoadingState);
+        addEventViewModel.saveSuccess.observe(getViewLifecycleOwner(), this::handleSaveSuccess);
+        addEventViewModel.errorMessage.observe(getViewLifecycleOwner(), this::handleError);
+
+        return binding.getRoot();
     }
 
     @Override
@@ -42,21 +63,15 @@ public class AddEventFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         calendar = Calendar.getInstance();
-
-        etDate = view.findViewById(R.id.etDate);
-
-        btnUpload = view.findViewById(R.id.btnUpload);
-
         setupDatePicker();
 
-        btnUpload.setOnClickListener(v -> {
-            NavController navController = NavHostFragment.findNavController(this);
-            navController.navigate(R.id.action_addEventFragment_to_mainFragment);
+        binding.btnUpload.setOnClickListener(v -> {
+            handleCreateEvent();
         });
     }
 
     private void setupDatePicker() {
-        etDate.setOnClickListener(new View.OnClickListener() {
+        binding.etDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickerDialog();
@@ -109,11 +124,62 @@ public class AddEventFragment extends Fragment {
 
     private void updateDateTimeField() {
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy. MM. dd. HH:mm", Locale.getDefault());
-        etDate.setText(dateTimeFormat.format(calendar.getTime()));
+        binding.etDate.setText(dateTimeFormat.format(calendar.getTime()));
     }
 
     private void updateDateField() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy. MM. dd.", Locale.getDefault());
-        etDate.setText(dateFormat.format(calendar.getTime()));
+        binding.etDate.setText(dateFormat.format(calendar.getTime()));
+    }
+
+    private void handleCreateEvent() {
+        String title = binding.etTitle.getText().toString();
+        String location = binding.etLocation.getText().toString();
+        Timestamp date = new Timestamp(calendar.getTime());
+        String participantsStr = binding.etParticipants.getText().toString();
+        String description = binding.etDescription.getText().toString();
+        Boolean fee = binding.radioPaid.isChecked();
+
+        try {
+            eventValidator.isValidEvent(requireContext(), title, location, date, participantsStr, description);
+
+            int participants = Integer.parseInt(participantsStr);
+            User user = sessionManager.getUser();
+
+            Event event = new Event(title, location, date, fee, participants, description, user.getUid(), new ArrayList<>());
+            addEventViewModel.saveEvent(event);
+        } catch (EventValidator.ValidationException e) {
+            handleError(e.getMessage());
+        }
+    }
+
+    private void clearForm() {
+        binding.etTitle.setText("");
+        binding.etLocation.setText("");
+        binding.etDate.setText("");
+        binding.etParticipants.setText("");
+        binding.etDescription.setText("");
+        binding.radioFree.setChecked(true);
+        calendar = Calendar.getInstance();
+    }
+
+    private void handleLoadingState(Boolean isLoading) {
+        binding.btnUpload.setEnabled(!isLoading);
+        ((MainActivity) requireActivity()).showLoadingOverlay(isLoading);
+    }
+
+    private void handleSaveSuccess(Boolean success) {
+        if (success != null && success) {
+            Toast.makeText(requireContext(), getContext().getString(R.string.success_event_creation), Toast.LENGTH_SHORT).show();
+            clearForm();
+            addEventViewModel.resetState();
+        }
+    }
+
+    private void handleError(String error) {
+        if (error != null) {
+            Toast.makeText(requireContext(), getContext().getString(R.string.error_event_prefix) +" "+ error, Toast.LENGTH_SHORT).show();
+            addEventViewModel.resetState();
+        }
     }
 }

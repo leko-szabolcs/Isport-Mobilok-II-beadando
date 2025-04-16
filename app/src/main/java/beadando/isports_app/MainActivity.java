@@ -24,6 +24,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import beadando.isports_app.data.repostiory.AuthRepository;
+import beadando.isports_app.domain.User;
 import beadando.isports_app.util.SessionManager;
 
 public class MainActivity extends AppCompatActivity {
@@ -118,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
     public void showLoading(boolean show) {
         if (show) {
             loadingOverlay.setVisibility(View.VISIBLE);
@@ -131,10 +131,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void logout() {
         new AuthRepository().logout(() -> {
-            new SessionManager(this).clearSession();
+            SessionManager sessionManager = new SessionManager(this);
+            sessionManager.clearSession();
+            sessionManager.setLoggedIn(false);
+
             Toast.makeText(this, "Sikeres kijelentkezés", Toast.LENGTH_SHORT).show();
             navController.popBackStack(R.id.loginFragment, false);
             navController.navigate(R.id.loginFragment);
         });
+    }
+
+    public void showLoadingOverlay(boolean show) {
+        FrameLayout loadingOverlay = findViewById(R.id.loadingOverlay);
+        loadingOverlay.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 }

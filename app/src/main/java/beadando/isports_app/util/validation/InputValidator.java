@@ -1,4 +1,4 @@
-package beadando.isports_app.util;
+package beadando.isports_app.util.validation;
 
 import android.content.Context;
 import android.util.Patterns;

@@ -8,8 +8,8 @@ public class User {
     private String email;
     private String username;
     private String searchName;
-    Timestamp createdAt;
-    Timestamp lastOnline;
+    private Timestamp createdAt;
+    private Timestamp lastOnline;
 
     public User() {}
 
