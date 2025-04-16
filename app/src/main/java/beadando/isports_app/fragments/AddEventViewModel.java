@@ -1,5 +1,6 @@
 package beadando.isports_app.fragments;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -8,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import beadando.isports_app.data.repostiory.EventRepository;
 import beadando.isports_app.domain.Event;
+import beadando.isports_app.util.callbacks.FirebaseResultCallbacks;
 
 public class AddEventViewModel extends ViewModel {
     private final EventRepository repository;
@@ -25,17 +27,20 @@ public class AddEventViewModel extends ViewModel {
 
     public void saveEvent(Event event) {
         _isLoading.setValue(true);
-        repository.saveEvent(event, new EventRepository.SaveCallback() {
+        repository.saveEvent(event, new FirebaseResultCallbacks<>() {
+
             @Override
-            public void onSuccess() {
+            public void onSuccess(String result, @Nullable Void extra) {
                 _isLoading.setValue(false);
                 _saveSuccess.setValue(true);
             }
+
             @Override
             public void onFailure(Exception e) {
                 _isLoading.setValue(false);
                 _errorMessage.setValue(e.getMessage());
             }
+
         });
     }
 

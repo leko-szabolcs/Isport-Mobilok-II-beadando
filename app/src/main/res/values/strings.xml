@@ -36,5 +36,8 @@
 
     <string name="success_event_creation">Sikeres esemény létrehozása</string>
     <string name="error_event_prefix">Hiba:</string>
+    
+    <string name="error_event_not_found">Az esemény nem található</string>"
 
+    <string name="event_participants">%1$d / %2$d Fő</string>
 </resources>
