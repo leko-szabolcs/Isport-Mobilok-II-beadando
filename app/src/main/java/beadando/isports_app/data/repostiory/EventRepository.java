@@ -4,10 +4,12 @@ package beadando.isports_app.data.repostiory;
 
 import androidx.annotation.Nullable;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import beadando.isports_app.domain.Event;
@@ -21,7 +23,10 @@ public class EventRepository {
     }
 
     public void saveEvent(Event event, FirebaseResultCallbacks<String, Void> callback) {
-        firestore.collection("events").document().set(event)
+        DocumentReference docRef = firestore.collection("events").document();
+        event.setId(docRef.getId());
+
+        docRef.set(event)
                 .addOnSuccessListener(unused -> callback.onSuccess("Success", null))
                 .addOnFailureListener(callback::onFailure);
     }
@@ -49,9 +54,19 @@ public class EventRepository {
 
         query.get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<Event> events = queryDocumentSnapshots.toObjects(Event.class);
-                    DocumentSnapshot last = queryDocumentSnapshots.getDocuments().get(queryDocumentSnapshots.size() - 1);
-                    callback.onSuccess(events,last);
+                    List<DocumentSnapshot> docs = queryDocumentSnapshots.getDocuments();
+                    List<Event> events = new ArrayList<>();
+
+                    for (DocumentSnapshot doc : docs) {
+                        Event event = doc.toObject(Event.class);
+                        if (event != null) {
+                            event.setId(doc.getId());
+                            events.add(event);
+                        }
+                    }
+
+                    DocumentSnapshot last = docs.isEmpty() ? null : docs.get(docs.size() - 1);
+                    callback.onSuccess(events, last);
                 })
                 .addOnFailureListener(callback::onFailure);
     }

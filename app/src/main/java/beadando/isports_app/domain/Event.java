@@ -5,6 +5,7 @@ import com.google.firebase.Timestamp;
 import java.util.List;
 
 public class Event {
+   private String id;
    private String title;
    private String location;
    private Timestamp date;
@@ -36,6 +37,14 @@ public class Event {
       this.createdBy = createdBy;
       this.participantsList = participantsList;
       this.createdAt = Timestamp.now();
+   }
+
+   public String getId() {
+      return id;
+   }
+
+   public void setId(String id) {
+      this.id = id;
    }
 
    public Timestamp getCreatedAt() {
