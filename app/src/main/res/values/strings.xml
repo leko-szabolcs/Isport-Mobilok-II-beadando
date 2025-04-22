@@ -18,6 +18,8 @@
     <string name="error_event_title_too_long">Az esemény címe túl hosszú</string>
     <string name="error_event_title_too_short">Az esemény címe túl rövid</string>
 
+    <string name="error_event_type_required">Sportág kiválasztása kötelező</string>
+
     <string name="error_event_location_required">A helyszín megadása kötelező</string>
     <string name="error_event_location_too_long">A helyszín túl hosszú</string>
     <string name="error_event_location_too_short">A helyszín túl rövid</string>

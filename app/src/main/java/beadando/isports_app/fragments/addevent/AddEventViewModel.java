@@ -1,4 +1,4 @@
-package beadando.isports_app.fragments;
+package beadando.isports_app.fragments.addevent;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -6,6 +6,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import beadando.isports_app.data.repostiory.EventRepository;
 import beadando.isports_app.domain.Event;

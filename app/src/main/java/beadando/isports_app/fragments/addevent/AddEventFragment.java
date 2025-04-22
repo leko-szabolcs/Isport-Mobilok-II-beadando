@@ -1,4 +1,4 @@
-package beadando.isports_app.fragments;
+package beadando.isports_app.fragments.addevent;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.google.firebase.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import beadando.isports_app.MainActivity;
@@ -28,26 +30,34 @@ import beadando.isports_app.R;
 import beadando.isports_app.databinding.FragmentAddEventBinding;
 import beadando.isports_app.domain.Event;
 import beadando.isports_app.domain.User;
+import beadando.isports_app.fragments.SharedViewModel;
 import beadando.isports_app.util.SessionManager;
 import beadando.isports_app.util.validation.EventValidator;
 
 public class AddEventFragment extends Fragment {
     private AddEventViewModel addEventViewModel;
+    private SharedViewModel sharedViewModel;
     private FragmentAddEventBinding binding;
     private Calendar calendar;
     private SessionManager sessionManager;
     private EventValidator eventValidator;
+    private ArrayAdapter<String> sportTypeAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAddEventBinding.inflate(inflater, container, false);
         addEventViewModel = new ViewModelProvider(requireActivity()).get(AddEventViewModel.class);
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         sessionManager = new SessionManager(requireActivity());
         eventValidator = new EventValidator();
+        setupSportTypesSpinner();
 
+        sharedViewModel.sportTypes.observe(getViewLifecycleOwner(), this::handleSportTypes);
         addEventViewModel.isLoading.observe(getViewLifecycleOwner(), this::handleLoadingState);
         addEventViewModel.saveSuccess.observe(getViewLifecycleOwner(), this::handleSaveSuccess);
         addEventViewModel.errorMessage.observe(getViewLifecycleOwner(), this::handleError);
+
+        sharedViewModel.loadSportTypes();
 
         return binding.getRoot();
     }
@@ -129,18 +139,19 @@ public class AddEventFragment extends Fragment {
     private void handleCreateEvent() {
         String title = binding.etTitle.getText().toString();
         String location = binding.etLocation.getText().toString();
+        String type = binding.spinnerType.getSelectedItem().toString();
         Timestamp date = new Timestamp(calendar.getTime());
         String participantsStr = binding.etParticipants.getText().toString();
         String description = binding.etDescription.getText().toString();
         Boolean fee = binding.radioPaid.isChecked();
 
         try {
-            eventValidator.isValidEvent(requireContext(), title, location, date, participantsStr, description);
+            eventValidator.isValidEvent(requireContext(), title, type, location, date, participantsStr, description);
 
             int participants = Integer.parseInt(participantsStr);
             User user = sessionManager.getUser();
 
-            Event event = new Event(title, location, date, fee, participants, description, user.getUid(), new ArrayList<>());
+            Event event = new Event(title, type, location, date, fee, participants, description, user.getUid(), new ArrayList<>());
             addEventViewModel.saveEvent(event);
         } catch (EventValidator.ValidationException e) {
             handleError(e.getMessage());
@@ -154,6 +165,7 @@ public class AddEventFragment extends Fragment {
         binding.etParticipants.setText("");
         binding.etDescription.setText("");
         binding.radioFree.setChecked(true);
+        binding.spinnerType.setSelection(0);
         calendar = Calendar.getInstance();
     }
 
@@ -175,5 +187,17 @@ public class AddEventFragment extends Fragment {
             Toast.makeText(requireContext(), getContext().getString(R.string.error_event_prefix) +" "+ error, Toast.LENGTH_SHORT).show();
             addEventViewModel.resetState();
         }
+    }
+
+    private void handleSportTypes(List<String> types) {
+        sportTypeAdapter.clear();
+        sportTypeAdapter.addAll(types);
+        sportTypeAdapter.notifyDataSetChanged();
+    }
+
+    private void setupSportTypesSpinner(){
+        sportTypeAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, new ArrayList<>());
+        sportTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerType.setAdapter(sportTypeAdapter);
     }
 }

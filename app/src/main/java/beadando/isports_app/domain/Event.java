@@ -2,10 +2,12 @@ package beadando.isports_app.domain;
 
 import com.google.firebase.Timestamp;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Event {
+public class Event implements Serializable {
    private String id;
+   private String type;
    private String title;
    private String location;
    private Timestamp date;
@@ -20,6 +22,7 @@ public class Event {
 
    public Event(
            String title,
+           String type,
            String location,
            Timestamp date,
            Boolean fee,
@@ -29,6 +32,7 @@ public class Event {
            List<String> participantsList
    ) {
       this.title = title;
+      this.type = type;
       this.location = location;
       this.date = date;
       this.fee = fee;
@@ -37,6 +41,14 @@ public class Event {
       this.createdBy = createdBy;
       this.participantsList = participantsList;
       this.createdAt = Timestamp.now();
+   }
+
+   public String getType() {
+      return type;
+   }
+
+   public void setType(String type) {
+      this.type = type;
    }
 
    public String getId() {

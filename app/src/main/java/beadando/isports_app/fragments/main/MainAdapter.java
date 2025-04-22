@@ -1,4 +1,4 @@
-package beadando.isports_app.fragments;
+package beadando.isports_app.fragments.main;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -15,6 +15,15 @@ import beadando.isports_app.domain.Event;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder> {
     private final List<Event> eventList = new ArrayList<>();
+    private OnItemClickListener  listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(Event event);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
     public void addEvents(List<Event> newEvents) {
         int oldSize = eventList.size();
@@ -34,6 +43,9 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
     public void onBindViewHolder(@NonNull MainAdapter.MainViewHolder holder, int position) {
         Event event = eventList.get(position);
         holder.bind(event);
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) listener.onItemClick(event);
+        });
     }
 
     @Override

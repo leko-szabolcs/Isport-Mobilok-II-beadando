@@ -12,6 +12,7 @@ public class EventValidator {
     public static void isValidEvent(
             Context context,
             String title,
+            String type,
             String location,
             Timestamp date,
             String participantsStr,
@@ -20,6 +21,10 @@ public class EventValidator {
 
         if (isNullOrEmpty(title) )  {
             throw new ValidationException(context.getString(R.string.error_event_title_required));
+        }
+
+        if (isNullOrEmpty(type)) {
+            throw new ValidationException(context.getString(R.string.error_event_type_required));
         }
 
         if (isNullOrEmpty(location)) {

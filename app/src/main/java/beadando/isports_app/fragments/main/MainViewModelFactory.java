@@ -1,4 +1,4 @@
-package beadando.isports_app.fragments;
+package beadando.isports_app.fragments.main;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;

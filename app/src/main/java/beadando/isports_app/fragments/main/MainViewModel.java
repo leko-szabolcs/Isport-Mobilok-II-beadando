@@ -1,4 +1,4 @@
-package beadando.isports_app.fragments;
+package beadando.isports_app.fragments.main;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -25,6 +25,9 @@ public class MainViewModel extends ViewModel {
 
     private DocumentSnapshot lastVisibleSnapshot = null;
     private boolean isLastPage = false;
+
+    private final MutableLiveData<List<String>> _sportTypes = new MutableLiveData<>(new ArrayList<>());
+    public final LiveData<List<String>> sportTypes = _sportTypes;
 
     MainViewModel(EventRepository repository) {
         this.repository = repository;

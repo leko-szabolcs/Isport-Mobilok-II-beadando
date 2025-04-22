@@ -16,7 +16,7 @@ import beadando.isports_app.domain.Event;
 import beadando.isports_app.util.callbacks.FirebaseResultCallbacks;
 
 public class EventRepository {
-    private FirebaseFirestore firestore;
+    private final FirebaseFirestore firestore;
 
     public EventRepository(FirebaseFirestore firestore) {
         this.firestore = firestore;
@@ -36,13 +36,16 @@ public class EventRepository {
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         Event event = documentSnapshot.toObject(Event.class);
-                    }else {
+                        if (event != null) {
+                            event.setId(documentSnapshot.getId());
+                            callback.onSuccess(event, null);
+                        }
+                    } else {
                         callback.onFailure(new Exception("error_event_not_found"));
                     }
                 })
                 .addOnFailureListener(callback::onFailure);
     }
-
 
     public void getLatesEvents(int limit, @Nullable DocumentSnapshot from,
                                FirebaseResultCallbacks<List<Event>, DocumentSnapshot>  callback){
@@ -69,5 +72,21 @@ public class EventRepository {
                     callback.onSuccess(events, last);
                 })
                 .addOnFailureListener(callback::onFailure);
+    }
+
+    public void getEventTypes(FirebaseResultCallbacks<List<String>, Void> callback) {
+        firestore.collection("sports").get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<String> types = new ArrayList<>();
+                    for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                        String name = doc.getString("name"); // vagy: Object name = doc.get("name");
+                        if (name != null) {
+                            types.add(name);
+                        }
+                    }
+                    callback.onSuccess(types, null);
+                })
+                .addOnFailureListener(callback::onFailure);
+
     }
 }

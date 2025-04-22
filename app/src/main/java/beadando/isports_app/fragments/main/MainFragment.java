@@ -1,57 +1,80 @@
-package beadando.isports_app.fragments;
+package beadando.isports_app.fragments.main;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.firestore.FirebaseFirestore;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import beadando.isports_app.MainActivity;
 import beadando.isports_app.R;
-import beadando.isports_app.data.repostiory.EventRepository;
 import beadando.isports_app.databinding.FragmentMainBinding;
 import beadando.isports_app.domain.Event;
+import beadando.isports_app.fragments.SharedViewModel;
 
 public class MainFragment extends Fragment {
 
     private MainAdapter adapter;
-    private MainViewModel viewModel;
+    private MainViewModel mainViewModel;
     private FragmentMainBinding binding;
+
+    private SharedViewModel sharedViewModel;
+    private ArrayAdapter<String> sportTypeAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentMainBinding.inflate(inflater, container, false);
+        MainViewModelFactory factory = new MainViewModelFactory();
+        mainViewModel = new ViewModelProvider(this, factory).get(MainViewModel.class);
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+
+        setupSportTypesSpinner();
+        sharedViewModel.sportTypes.observe(getViewLifecycleOwner(), this::handleSportTypes);
+
         return binding.getRoot();
+    }
+
+    private void setupSportTypesSpinner() {
+        sportTypeAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, new ArrayList<>());
+        sportTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerEventType.setAdapter(sportTypeAdapter);
+    }
+
+    private void handleSportTypes(List<String> types) {
+        sportTypeAdapter.clear();
+        sportTypeAdapter.addAll(types);
+        sportTypeAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        MainViewModelFactory factory = new MainViewModelFactory();
-        viewModel = new ViewModelProvider(this, factory).get(MainViewModel.class);
+        sharedViewModel.loadSportTypes();
 
         adapter = new MainAdapter();
         binding.recyclerViewEvents.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.recyclerViewEvents.setAdapter(adapter);
 
-        viewModel.getEvents().observe(getViewLifecycleOwner(), this::handleEvents);
-        viewModel.isLoading.observe(getViewLifecycleOwner(), this::handleLoading);
-        viewModel.errorMessage.observe(getViewLifecycleOwner(), this::handleError);
+        mainViewModel.getEvents().observe(getViewLifecycleOwner(), this::handleEvents);
+        mainViewModel.isLoading.observe(getViewLifecycleOwner(), this::handleLoading);
+        mainViewModel.errorMessage.observe(getViewLifecycleOwner(), this::handleError);
 
+        setupOnItemClickListener();
         setupScrollListener();
-        viewModel.loadEvents();
+        mainViewModel.loadEvents();
     }
 
     private void setupScrollListener() {
@@ -61,10 +84,18 @@ public class MainFragment extends Fragment {
                 LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
                 if (lm != null
                         && lm.findLastVisibleItemPosition() >= adapter.getItemCount() - 5
-                        && !Boolean.TRUE.equals(viewModel.isLoading.getValue())) {
-                    viewModel.loadEvents();
+                        && !Boolean.TRUE.equals(mainViewModel.isLoading.getValue())) {
+                    mainViewModel.loadEvents();
                 }
             }
+        });
+    }
+
+    private void setupOnItemClickListener() {
+        adapter.setOnItemClickListener(event -> {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("event", event);
+            NavHostFragment.findNavController(this).navigate(R.id.action_mainFragment_to_eventFragment, bundle);
         });
     }
 
