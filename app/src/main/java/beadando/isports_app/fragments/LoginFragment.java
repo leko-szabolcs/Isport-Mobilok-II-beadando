@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import beadando.isports_app.MainActivity;
 import beadando.isports_app.R;
 import beadando.isports_app.data.repostiory.AuthRepository;
@@ -30,7 +32,7 @@ public class LoginFragment extends Fragment {
         EditText etUsername = view.findViewById(R.id.etUsername);
         EditText etPassword = view.findViewById(R.id.etPassword);
 
-        AuthRepository auth = new AuthRepository();
+        AuthRepository auth = new AuthRepository(FirebaseFirestore.getInstance());
         LoginAdapter loginAdapter =  new LoginAdapter(etUsername, etPassword);
         sessionManager = new SessionManager(requireActivity().getApplicationContext());
 

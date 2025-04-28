@@ -40,6 +40,21 @@
     <string name="error_event_prefix">Hiba:</string>
     
     <string name="error_event_not_found">Az esemény nem található</string>"
+    <string name="error_already_applied">Már csatlakozott az eseményre</string>
+    <string name="error_event_full">Az esemény megtelt</string>
+
+    <string name="error_unknown">Ismeretlen hiba</string>
+
+
+    <string name="successful_apply">Sikeres csatlakozás</string>
+    <string name="create_event_success">Sikeres esemény létrehozása</string>
+    <string name="default_success_message">Sikeres művelet</string>
+
 
     <string name="event_participants">%1$d / %2$d Fő</string>
+    <string name="event_fee">Fizetős</string>
+    <string name="event_free">Ingyenes</string>
+
+
+
 </resources>

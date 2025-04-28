@@ -25,6 +25,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import beadando.isports_app.MainActivity;
 import beadando.isports_app.R;
 import beadando.isports_app.databinding.FragmentAddEventBinding;
@@ -33,22 +35,25 @@ import beadando.isports_app.domain.User;
 import beadando.isports_app.fragments.SharedViewModel;
 import beadando.isports_app.util.SessionManager;
 import beadando.isports_app.util.validation.EventValidator;
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class AddEventFragment extends Fragment {
+    @Inject
+    SessionManager sessionManager;
+
     private AddEventViewModel addEventViewModel;
     private SharedViewModel sharedViewModel;
     private FragmentAddEventBinding binding;
     private Calendar calendar;
-    private SessionManager sessionManager;
     private EventValidator eventValidator;
     private ArrayAdapter<String> sportTypeAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAddEventBinding.inflate(inflater, container, false);
-        addEventViewModel = new ViewModelProvider(requireActivity()).get(AddEventViewModel.class);
-        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-        sessionManager = new SessionManager(requireActivity());
+        addEventViewModel = new ViewModelProvider(this).get(AddEventViewModel.class);
+        sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
         eventValidator = new EventValidator();
         setupSportTypesSpinner();
 
@@ -154,7 +159,7 @@ public class AddEventFragment extends Fragment {
             Event event = new Event(title, type, location, date, fee, participants, description, user.getUid(), new ArrayList<>());
             addEventViewModel.saveEvent(event);
         } catch (EventValidator.ValidationException e) {
-            handleError(e.getMessage());
+            Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -174,18 +179,18 @@ public class AddEventFragment extends Fragment {
         ((MainActivity) requireActivity()).showLoadingOverlay(isLoading);
     }
 
-    private void handleSaveSuccess(Boolean success) {
-        if (success != null && success) {
-            Toast.makeText(requireContext(), getContext().getString(R.string.success_event_creation), Toast.LENGTH_SHORT).show();
-            clearForm();
-            addEventViewModel.resetState();
-        }
+    private void handleSaveSuccess(int resId) {
+        showMessage(resId);
+        clearForm();
     }
 
-    private void handleError(String error) {
-        if (error != null) {
-            Toast.makeText(requireContext(), getContext().getString(R.string.error_event_prefix) +" "+ error, Toast.LENGTH_SHORT).show();
-            addEventViewModel.resetState();
+    private void handleError(int resId) {
+        showMessage(resId);
+    }
+
+    private void showMessage(int resId) {
+        if (resId != 0){
+            Toast.makeText(requireContext(), getString(resId), Toast.LENGTH_LONG).show();
         }
     }
 

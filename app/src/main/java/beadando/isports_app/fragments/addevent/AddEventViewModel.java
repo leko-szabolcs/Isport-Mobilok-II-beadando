@@ -10,45 +10,47 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import beadando.isports_app.data.repostiory.EventRepository;
 import beadando.isports_app.domain.Event;
 import beadando.isports_app.util.callbacks.FirebaseResultCallbacks;
+import beadando.isports_app.util.mappers.ErrorMapper;
+import beadando.isports_app.util.mappers.SuccessMapper;
+import dagger.hilt.android.lifecycle.HiltViewModel;
 
+@HiltViewModel
 public class AddEventViewModel extends ViewModel {
     private final EventRepository repository;
 
-    private final MutableLiveData<Boolean> _saveSuccess = new MutableLiveData<>();
-    public final LiveData<Boolean> saveSuccess = _saveSuccess;
-    private final MutableLiveData<String> _errorMessage = new MutableLiveData<>();
-    public final LiveData<String> errorMessage = _errorMessage;
+    private final MutableLiveData<Integer> _saveSuccess = new MutableLiveData<>();
+    public final LiveData<Integer> saveSuccess = _saveSuccess;
+    private final MutableLiveData<Integer> _errorMessage = new MutableLiveData<>();
+    public final LiveData<Integer> errorMessage = _errorMessage;
     private final MutableLiveData<Boolean> _isLoading = new MutableLiveData<>();
     public final LiveData<Boolean> isLoading = _isLoading;
 
-    public AddEventViewModel() {
-        repository = new EventRepository(FirebaseFirestore.getInstance());
+    @Inject
+    public AddEventViewModel(EventRepository repository) {
+        this.repository = repository;
     }
 
     public void saveEvent(Event event) {
         _isLoading.setValue(true);
-        repository.saveEvent(event, new FirebaseResultCallbacks<>() {
+        repository.createEvent(event, new FirebaseResultCallbacks<>() {
 
             @Override
             public void onSuccess(String result, @Nullable Void extra) {
                 _isLoading.setValue(false);
-                _saveSuccess.setValue(true);
+                _saveSuccess.postValue(SuccessMapper.mapSuccessCodeToMessage(result));
             }
 
             @Override
             public void onFailure(Exception e) {
                 _isLoading.setValue(false);
-                _errorMessage.setValue(e.getMessage());
+                _errorMessage.postValue(ErrorMapper.mapExceptionToMessage(e));;
             }
 
         });
-    }
-
-    public void resetState() {
-        _saveSuccess.setValue(null);
-        _errorMessage.setValue(null);
     }
 }

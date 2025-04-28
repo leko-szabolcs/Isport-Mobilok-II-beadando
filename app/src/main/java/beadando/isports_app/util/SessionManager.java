@@ -7,7 +7,16 @@ import com.google.firebase.Timestamp;
 
 import java.util.Date;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import beadando.isports_app.domain.User;
+import dagger.Module;
+import dagger.Provides;
+import dagger.hilt.InstallIn;
+import dagger.hilt.components.SingletonComponent;
+
+@Singleton
 public class SessionManager {
 
     private static final String PREF_NAME = "user_session";
@@ -15,6 +24,7 @@ public class SessionManager {
     private final SharedPreferences prefs;
     private final SharedPreferences.Editor editor;
 
+    @Inject
     public SessionManager(Context context) {
         prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editor = prefs.edit();

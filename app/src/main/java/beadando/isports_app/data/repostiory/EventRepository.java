@@ -4,30 +4,39 @@ package beadando.isports_app.data.repostiory;
 
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import beadando.isports_app.domain.Event;
+import beadando.isports_app.util.SessionManager;
 import beadando.isports_app.util.callbacks.FirebaseResultCallbacks;
+
 
 public class EventRepository {
     private final FirebaseFirestore firestore;
+    private final SessionManager sessionManager;
 
-    public EventRepository(FirebaseFirestore firestore) {
+    @Inject
+    public EventRepository(FirebaseFirestore firestore, SessionManager sessionManager) {
         this.firestore = firestore;
+        this.sessionManager = sessionManager;
     }
 
-    public void saveEvent(Event event, FirebaseResultCallbacks<String, Void> callback) {
+    public void createEvent(Event event, FirebaseResultCallbacks<String, Void> callback) {
         DocumentReference docRef = firestore.collection("events").document();
         event.setId(docRef.getId());
 
         docRef.set(event)
-                .addOnSuccessListener(unused -> callback.onSuccess("Success", null))
+                .addOnSuccessListener(unused -> callback.onSuccess("create_event_success", null))
                 .addOnFailureListener(callback::onFailure);
     }
 
@@ -47,7 +56,7 @@ public class EventRepository {
                 .addOnFailureListener(callback::onFailure);
     }
 
-    public void getLatesEvents(int limit, @Nullable DocumentSnapshot from,
+    public void getLatestEvents(int limit, @Nullable DocumentSnapshot from,
                                FirebaseResultCallbacks<List<Event>, DocumentSnapshot>  callback){
         Query query =  firestore.collection("events")
                 .orderBy("createdAt", Query.Direction.DESCENDING)
@@ -88,5 +97,48 @@ public class EventRepository {
                 })
                 .addOnFailureListener(callback::onFailure);
 
+    }
+
+    public void applyForEvent(String eventId, FirebaseResultCallbacks<String, Void> callback) {
+        checkEventApplyRequirements(eventId, new FirebaseResultCallbacks<Boolean, Void>() {
+            @Override
+            public void onSuccess(Boolean result, Void unused) {
+                firestore.collection("events").document(eventId)
+                        .update("participantsList", FieldValue.arrayUnion(sessionManager.getUser().getUid()))
+                        .addOnSuccessListener(unused2 -> callback.onSuccess("successful_apply", null))
+                        .addOnFailureListener(callback::onFailure);
+            }
+            @Override
+            public void onFailure(Exception e) {
+                callback.onFailure(e);
+            }
+        });
+    }
+
+    private void checkEventApplyRequirements(String eventId, FirebaseResultCallbacks<Boolean, Void> callback) {
+        Query query = firestore.collection("events").whereEqualTo("id", eventId);
+        query.get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (queryDocumentSnapshots.isEmpty()) {
+                        callback.onFailure(new Exception());
+                        return;
+                    }
+                    DocumentSnapshot docs = queryDocumentSnapshots.getDocuments().get(0);
+                    Event event = docs.toObject(Event.class);
+                    if (event != null) {
+                        if (event.getParticipantsList().contains(sessionManager.getUser().getUid())) {
+                            callback.onFailure(new Exception("error_already_applied"));
+                            return;
+                        }
+                        if (event.getParticipantsList().size() >= event.getParticipants()) {
+                            callback.onFailure(new Exception("error_event_full"));
+                            return;
+                        }
+                        callback.onSuccess(true, null);
+                    } else {
+                        callback.onFailure(new Exception("error_event_not_found"));
+                    }
+                })
+                .addOnFailureListener(callback::onFailure);
     }
 }

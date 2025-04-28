@@ -18,12 +18,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import beadando.isports_app.MainActivity;
 import beadando.isports_app.R;
 import beadando.isports_app.databinding.FragmentMainBinding;
 import beadando.isports_app.domain.Event;
 import beadando.isports_app.fragments.SharedViewModel;
+import beadando.isports_app.fragments.event.EventViewModel;
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class MainFragment extends Fragment {
 
     private MainAdapter adapter;
@@ -36,9 +41,8 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentMainBinding.inflate(inflater, container, false);
-        MainViewModelFactory factory = new MainViewModelFactory();
-        mainViewModel = new ViewModelProvider(this, factory).get(MainViewModel.class);
-        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
 
         setupSportTypesSpinner();
         sharedViewModel.sportTypes.observe(getViewLifecycleOwner(), this::handleSportTypes);

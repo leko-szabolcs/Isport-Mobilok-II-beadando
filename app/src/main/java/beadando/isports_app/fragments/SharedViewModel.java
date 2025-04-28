@@ -10,9 +10,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import beadando.isports_app.data.repostiory.EventRepository;
 import beadando.isports_app.util.callbacks.FirebaseResultCallbacks;
+import dagger.hilt.android.lifecycle.HiltViewModel;
 
+@HiltViewModel
 public class SharedViewModel extends ViewModel {
     private final EventRepository repository;
 
@@ -22,8 +26,9 @@ public class SharedViewModel extends ViewModel {
     private final MutableLiveData<List<String>> _sportTypes = new MutableLiveData<>(new ArrayList<>());
     public final LiveData<List<String>> sportTypes = _sportTypes;
 
-    public SharedViewModel() {
-        this.repository = new EventRepository(FirebaseFirestore.getInstance());
+    @Inject
+    public SharedViewModel(EventRepository repository) {
+        this.repository = repository;
     }
 
     public void loadSportTypes(){

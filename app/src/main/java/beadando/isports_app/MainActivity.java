@@ -23,11 +23,20 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import javax.inject.Inject;
+
 import beadando.isports_app.data.repostiory.AuthRepository;
 import beadando.isports_app.domain.User;
 import beadando.isports_app.util.SessionManager;
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
+    @Inject
+    SessionManager sessionManager;
+
     private NavController navController;
     private AppBarConfiguration appBarConfiguration;
     private FrameLayout loadingOverlay;
@@ -52,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mainToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        SessionManager sessionManager = new SessionManager(this);
         if (sessionManager.isLoggedIn()) {
             NavHostFragment navHostFragment =
                     (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
@@ -130,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logout() {
-        new AuthRepository().logout(() -> {
+        new AuthRepository(FirebaseFirestore.getInstance()).logout(() -> {
             SessionManager sessionManager = new SessionManager(this);
             sessionManager.clearSession();
             sessionManager.setLoggedIn(false);

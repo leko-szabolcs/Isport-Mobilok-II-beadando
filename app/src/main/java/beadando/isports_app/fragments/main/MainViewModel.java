@@ -10,13 +10,17 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import beadando.isports_app.util.callbacks.FirebaseResultCallbacks;
 import beadando.isports_app.data.repostiory.EventRepository;
 import beadando.isports_app.domain.Event;
+import dagger.hilt.android.lifecycle.HiltViewModel;
 
+@HiltViewModel
 public class MainViewModel extends ViewModel {
     private final MutableLiveData<List<Event>> eventsLiveData = new MutableLiveData<>(new ArrayList<>());
-    private final EventRepository repository;
+    private final EventRepository eventRepository;
 
     private final MutableLiveData<Boolean> _isLoading = new MutableLiveData<>();
     public final LiveData<Boolean> isLoading = _isLoading;
@@ -29,8 +33,9 @@ public class MainViewModel extends ViewModel {
     private final MutableLiveData<List<String>> _sportTypes = new MutableLiveData<>(new ArrayList<>());
     public final LiveData<List<String>> sportTypes = _sportTypes;
 
-    MainViewModel(EventRepository repository) {
-        this.repository = repository;
+    @Inject
+    MainViewModel(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
     }
 
     public LiveData<List<Event>> getEvents(){
@@ -40,7 +45,7 @@ public class MainViewModel extends ViewModel {
     public void loadEvents() {
         if (isLastPage || Boolean.TRUE.equals(_isLoading.getValue())) return;
         _isLoading.setValue(true);
-        repository.getLatesEvents(20, lastVisibleSnapshot, new FirebaseResultCallbacks<>()
+        eventRepository.getLatestEvents(20, lastVisibleSnapshot, new FirebaseResultCallbacks<>()
         {
             @Override
             public void onSuccess(List<Event> result, @Nullable DocumentSnapshot lastVisible) {
