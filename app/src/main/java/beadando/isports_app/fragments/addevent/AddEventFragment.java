@@ -169,7 +169,7 @@ public class AddEventFragment extends Fragment {
         binding.etDate.setText("");
         binding.etParticipants.setText("");
         binding.etDescription.setText("");
-        binding.radioFree.setChecked(true);
+        binding.radioPaid.setChecked(false);
         binding.spinnerType.setSelection(0);
         calendar = Calendar.getInstance();
     }

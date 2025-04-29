@@ -28,10 +28,8 @@ public class MainViewModel extends ViewModel {
     public final LiveData<String> errorMessage = _errorMessage;
 
     private DocumentSnapshot lastVisibleSnapshot = null;
+    private String selectedSportType = null;
     private boolean isLastPage = false;
-
-    private final MutableLiveData<List<String>> _sportTypes = new MutableLiveData<>(new ArrayList<>());
-    public final LiveData<List<String>> sportTypes = _sportTypes;
 
     @Inject
     MainViewModel(EventRepository eventRepository) {
@@ -45,7 +43,10 @@ public class MainViewModel extends ViewModel {
     public void loadEvents() {
         if (isLastPage || Boolean.TRUE.equals(_isLoading.getValue())) return;
         _isLoading.setValue(true);
-        eventRepository.getLatestEvents(20, lastVisibleSnapshot, new FirebaseResultCallbacks<>()
+        eventRepository.getLatestEvents(20,
+                lastVisibleSnapshot,
+                selectedSportType,
+                new FirebaseResultCallbacks<>()
         {
             @Override
             public void onSuccess(List<Event> result, @Nullable DocumentSnapshot lastVisible) {
@@ -67,6 +68,11 @@ public class MainViewModel extends ViewModel {
                 _isLoading.setValue(false);
             }
         });
+    }
+
+    public void setSportType(String sportType) {
+        this.selectedSportType = sportType;
+        refreshEvents();
     }
 
     public void refreshEvents() {

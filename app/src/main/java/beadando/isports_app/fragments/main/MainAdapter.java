@@ -12,6 +12,7 @@ import java.util.List;
 import beadando.isports_app.R;
 import beadando.isports_app.databinding.ItemEventBinding;
 import beadando.isports_app.domain.Event;
+import beadando.isports_app.util.DateUtils;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder> {
     private final List<Event> eventList = new ArrayList<>();
@@ -25,10 +26,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
         this.listener = listener;
     }
 
-    public void addEvents(List<Event> newEvents) {
-        int oldSize = eventList.size();
+    public void setEvents(List<Event> newEvents) {
+        eventList.clear();
         eventList.addAll(newEvents);
-        notifyItemRangeInserted(oldSize, newEvents.size());
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -69,6 +70,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
                             event.getParticipantsList().size(),
                             event.getParticipants()
                     ));
+            binding.textEventDate.setText(DateUtils.formatFirebaseTimestampForDisplay(event.getDate()));
             binding.imageEventType.setImageResource(R.drawable.ic_sport_logo);
         }
     }

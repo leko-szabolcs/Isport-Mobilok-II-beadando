@@ -54,6 +54,7 @@
     <string name="event_participants">%1$d / %2$d Fő</string>
     <string name="event_fee">Fizetős</string>
     <string name="event_free">Ingyenes</string>
+    <string name="any_option">Minden lehetőség"</string>
 
 
 

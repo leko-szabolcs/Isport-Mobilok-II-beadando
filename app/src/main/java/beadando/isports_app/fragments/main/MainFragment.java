@@ -1,9 +1,11 @@
 package beadando.isports_app.fragments.main;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -58,6 +60,7 @@ public class MainFragment extends Fragment {
 
     private void handleSportTypes(List<String> types) {
         sportTypeAdapter.clear();
+        sportTypeAdapter.add(requireContext().getString(R.string.any_option));
         sportTypeAdapter.addAll(types);
         sportTypeAdapter.notifyDataSetChanged();
     }
@@ -65,6 +68,8 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        binding.spinnerEventType.setOnItemSelectedListener(createSportTypeSelectionListener());
 
         sharedViewModel.loadSportTypes();
 
@@ -104,7 +109,26 @@ public class MainFragment extends Fragment {
     }
 
     private void handleEvents(List<Event> events) {
-        adapter.addEvents(events);
+        adapter.setEvents(events);
+    }
+
+    private AdapterView.OnItemSelectedListener createSportTypeSelectionListener() {
+        return new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selected = (String) parent.getItemAtPosition(position);
+                if (!selected.equals(getContext().getString(R.string.any_option))) {
+                    mainViewModel.setSportType(selected);
+                } else {
+                    mainViewModel.setSportType(null);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                mainViewModel.setSportType(null);
+            }
+        };
     }
 
     private void handleLoading(Boolean loading) {

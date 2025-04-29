@@ -31,7 +31,7 @@ public class EventRepository {
         this.sessionManager = sessionManager;
     }
 
-    public void createEvent(Event event, FirebaseResultCallbacks<String, Void> callback) {
+    public void insertEvent(Event event, FirebaseResultCallbacks<String, Void> callback) {
         DocumentReference docRef = firestore.collection("events").document();
         event.setId(docRef.getId());
 
@@ -56,13 +56,20 @@ public class EventRepository {
                 .addOnFailureListener(callback::onFailure);
     }
 
-    public void getLatestEvents(int limit, @Nullable DocumentSnapshot from,
-                               FirebaseResultCallbacks<List<Event>, DocumentSnapshot>  callback){
+    public void getLatestEvents(int limit,
+                                @Nullable DocumentSnapshot from,
+                                @Nullable String sportType,
+                                FirebaseResultCallbacks<List<Event>, DocumentSnapshot>  callback){
         Query query =  firestore.collection("events")
-                .orderBy("createdAt", Query.Direction.DESCENDING)
+                .orderBy("date", Query.Direction.ASCENDING)
                 .limit(limit);
 
-        if (from != null) query = query.startAfter(from);
+        if (from != null)
+            query = query.startAfter(from);
+
+        if (sportType != null && !sportType.isEmpty())
+            query = query.whereEqualTo("type", sportType);
+
 
         query.get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {

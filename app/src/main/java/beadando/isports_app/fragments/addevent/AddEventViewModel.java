@@ -37,7 +37,7 @@ public class AddEventViewModel extends ViewModel {
 
     public void saveEvent(Event event) {
         _isLoading.setValue(true);
-        repository.createEvent(event, new FirebaseResultCallbacks<>() {
+        repository.insertEvent(event, new FirebaseResultCallbacks<>() {
 
             @Override
             public void onSuccess(String result, @Nullable Void extra) {
