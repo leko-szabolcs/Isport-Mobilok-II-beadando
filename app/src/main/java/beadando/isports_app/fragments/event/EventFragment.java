@@ -28,6 +28,7 @@ public class EventFragment extends Fragment {
     private FragmentEventBinding binding;
     private EventViewModel eventViewModel;
     private EventAdapter eventAdapter;
+    private Event event;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,14 +39,13 @@ public class EventFragment extends Fragment {
         binding.rvParticipants.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvParticipants.setAdapter(eventAdapter);
 
-        Event event = null;
         if (getArguments() != null) {
             event = (Event) getArguments().getSerializable("event");
         }
 
         if(event != null) {
             eventViewModel.getEventOrganizerUser(event.getCreatedBy());
-            eventViewModel.getEventParticipants(event.getParticipantsList());
+            eventViewModel.getEventParticipantsByEventId(event.getId());
 
             binding.tvTypeValue.setText(event.getType());
             binding.tvOrganizerValue.setText("n/a");
@@ -61,9 +61,16 @@ public class EventFragment extends Fragment {
         eventViewModel.organizer.observe(getViewLifecycleOwner(), this::loadEventOwner);
         eventViewModel.participants.observe(getViewLifecycleOwner(), this::loadEventParticipants);
         eventViewModel.errorMessage.observe(getViewLifecycleOwner(), this::showMessage);
-        eventViewModel.successMessage.observe(getViewLifecycleOwner(), this::showMessage);
+        eventViewModel.successMessage.observe(getViewLifecycleOwner(), resId -> {
+            showMessage(resId);
+            refreshEventData(event.getId());
+        });
 
         return binding.getRoot();
+    }
+
+    private void refreshEventData(String eventId) {
+        eventViewModel.getEventParticipantsByEventId(eventId);
     }
 
     private void showMessage(int resId) {
@@ -89,7 +96,6 @@ public class EventFragment extends Fragment {
             binding.tvOrganizerValue.setText("ismeretlen");
         }
     }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

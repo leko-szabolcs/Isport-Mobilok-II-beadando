@@ -5,11 +5,13 @@ package beadando.isports_app.data.repostiory;
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import beadando.isports_app.domain.Event;
+import beadando.isports_app.domain.User;
 import beadando.isports_app.util.SessionManager;
 import beadando.isports_app.util.callbacks.FirebaseResultCallbacks;
 
@@ -145,6 +148,58 @@ public class EventRepository {
                     } else {
                         callback.onFailure(new Exception("error_event_not_found"));
                     }
+                })
+                .addOnFailureListener(callback::onFailure);
+    }
+
+    public void getParticipantsByEventId(String eventId, FirebaseResultCallbacks<List<User>, Void> callback) {
+        firestore.collection("events")
+                .document(eventId)
+                .get()
+                .addOnSuccessListener(eventSnapshot -> {
+                    if (eventSnapshot.exists()) {
+                        List<String> participantIds = (List<String>) eventSnapshot.get("participantsList");
+                        if (participantIds == null || participantIds.isEmpty()) {
+                            callback.onSuccess(new ArrayList<>(), null);
+                            return;
+                        }
+
+                        getEventParticipantsByParticipantsList(participantIds, callback);
+                    } else {
+                        callback.onFailure(new Exception("error_event_not_found"));
+                    }
+                })
+                .addOnFailureListener(callback::onFailure);
+    }
+
+    private void getEventParticipantsByParticipantsList(List<String> participantIds, FirebaseResultCallbacks<List<User>, Void> callback) {
+        List<User> participants = new ArrayList<>();
+        List<List<String>> batches = new ArrayList<>();
+
+        for (int i = 0; i < participantIds.size(); i += 10) {
+            batches.add(participantIds.subList(i, Math.min(i + 10, participantIds.size())));
+        }
+
+        List<Task<QuerySnapshot>> tasks = new ArrayList<>();
+        for (List<String> batch : batches) {
+            Task<QuerySnapshot> task = firestore.collection("users")
+                    .whereIn("uid", batch)
+                    .get();
+            tasks.add(task);
+        }
+
+        Tasks.whenAllSuccess(tasks)
+                .addOnSuccessListener(results -> {
+                    for (Object result : results) {
+                        QuerySnapshot querySnapshot = (QuerySnapshot) result;
+                        for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                            User user = doc.toObject(User.class);
+                            if (user != null) {
+                                participants.add(user);
+                            }
+                        }
+                    }
+                    callback.onSuccess(participants, null);
                 })
                 .addOnFailureListener(callback::onFailure);
     }

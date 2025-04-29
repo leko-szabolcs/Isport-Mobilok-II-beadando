@@ -51,15 +51,13 @@ public class EventViewModel extends ViewModel {
         });
     }
 
-    public void getEventParticipants(List<String> participantIds){
-        if (participantIds == null || participantIds.isEmpty()) {
-            return;
-        }
-        userRepository.getEventParticipantsByParticipantsList(participantIds, new FirebaseResultCallbacks<>() {
+    public void getEventParticipantsByEventId(String eventId) {
+        eventRepository.getParticipantsByEventId(eventId, new FirebaseResultCallbacks<>() {
             @Override
             public void onSuccess(List<User> result, @Nullable Void extra) {
                 _participants.setValue(result);
             }
+
             @Override
             public void onFailure(Exception e) {
                 _errorMessage.postValue(ErrorMapper.mapExceptionToMessage(e));
