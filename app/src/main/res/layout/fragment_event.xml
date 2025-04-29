@@ -202,129 +202,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPlayersLabel" />
 
-    <TableLayout
-        android:id="@+id/playersTable"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvParticipants"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="180dp"
         android:layout_marginTop="8dp"
-        android:stretchColumns="*"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider2">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tvPlayer1Label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="1.\njelentkező"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tvPlayer2Label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="2.\njelentkező"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tvPlayer3Label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="3.\njelentkező"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tvPlayer4Label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="4.\njelentkező"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tvPlayer5Label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="5.\njelentkező"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tvPlayer6Label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="6.\njelentkező"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tvPlayer7Label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="7.\njelentkező"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tvPlayer8Label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="8.\njelentkező"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-        </TableRow>
-
-    </TableLayout>
+        app:layout_constraintTop_toBottomOf="@id/divider2"
+        tools:listitem="@layout/item_participant" />
 
     <Button
         android:id="@+id/btnJoin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/rounded_button"
         android:elevation="4dp"
         android:padding="12dp"
@@ -335,6 +229,6 @@
         app:backgroundTint="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/playersTable" />
+        app:layout_constraintTop_toBottomOf="@+id/rvParticipants" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

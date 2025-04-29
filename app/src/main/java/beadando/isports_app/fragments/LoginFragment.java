@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import beadando.isports_app.MainActivity;
 import beadando.isports_app.R;
 import beadando.isports_app.data.repostiory.AuthRepository;
@@ -20,6 +22,8 @@ import beadando.isports_app.domain.User;
 import beadando.isports_app.util.SessionManager;
 
 public class LoginFragment extends Fragment {
+    private SessionManager sessionManager;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -28,8 +32,9 @@ public class LoginFragment extends Fragment {
         EditText etUsername = view.findViewById(R.id.etUsername);
         EditText etPassword = view.findViewById(R.id.etPassword);
 
-        AuthRepository auth = new AuthRepository();
+        AuthRepository auth = new AuthRepository(FirebaseFirestore.getInstance());
         LoginAdapter loginAdapter =  new LoginAdapter(etUsername, etPassword);
+        sessionManager = new SessionManager(requireActivity().getApplicationContext());
 
         view.findViewById(R.id.tvRegister).setOnClickListener(v ->
                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment)
@@ -42,7 +47,8 @@ public class LoginFragment extends Fragment {
                 @Override
                 public void onSuccess(User user) {
                     ((MainActivity) requireActivity()).showLoading(false);
-                    new SessionManager(requireActivity().getApplicationContext()).setLoggedIn(true);
+                    sessionManager.saveUser(user);
+                    sessionManager.setLoggedIn(true);
                     Toast.makeText(getContext(), "Sikeres bejelentkezés", Toast.LENGTH_SHORT).show();
                     Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_mainFragment);
                 }

@@ -1,9 +1,8 @@
 package beadando.isports_app.fragments;
 
-import android.util.Patterns;
 import android.widget.EditText;
 
-import beadando.isports_app.util.InputValidator;
+import beadando.isports_app.util.validation.InputValidator;
 
 public class LoginAdapter {
 

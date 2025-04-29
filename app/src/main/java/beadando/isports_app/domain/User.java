@@ -8,12 +8,13 @@ public class User {
     private String email;
     private String username;
     private String searchName;
-    Timestamp createdAt;
-    Timestamp lastOnline;
+    private Timestamp createdAt;
+    private Timestamp lastOnline;
 
     public User() {}
 
-    public User(String uid, String email, String username, String searchName, Timestamp lastOnline, Timestamp createdAt) {        this.uid = uid;
+    public User(String uid, String email, String username, String searchName, Timestamp lastOnline, Timestamp createdAt) {
+        this.uid = uid;
         this.email = email;
         this.username = username;
         this.searchName = searchName;

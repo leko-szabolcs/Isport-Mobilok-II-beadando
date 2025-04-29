@@ -90,18 +90,9 @@
         app:layout_constraintTop_toBottomOf="@+id/etDate">
 
         <RadioButton
-            android:id="@+id/radioFree"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ingyenes"
-            android:textColor="@color/black"
-            android:buttonTint="@color/black" />
-
-        <RadioButton
             android:id="@+id/radioPaid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:text="Fizetős"
             android:textColor="@color/black"
             android:buttonTint="@color/black" />

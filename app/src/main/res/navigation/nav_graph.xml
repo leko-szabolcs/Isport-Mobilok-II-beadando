@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="beadando.isports_app.fragments.MainFragment"
+        android:name="beadando.isports_app.fragments.main.MainFragment"
         android:label="Főoldal"
         tools:layout="@layout/fragment_main" >
         <action
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/addEventFragment"
-        android:name="beadando.isports_app.fragments.AddEventFragment"
+        android:name="beadando.isports_app.fragments.addevent.AddEventFragment"
         android:label="fragment_add_event"
         tools:layout="@layout/fragment_add_event" >
         <action
@@ -65,7 +65,7 @@
     </fragment>
     <fragment
         android:id="@+id/eventFragment"
-        android:name="beadando.isports_app.fragments.EventFragment"
+        android:name="beadando.isports_app.fragments.event.EventFragment"
         android:label="EventFragment" >
         <action
             android:id="@+id/action_eventFragment_to_mainFragment"

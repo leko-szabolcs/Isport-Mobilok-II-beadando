@@ -1,30 +1,34 @@
 package beadando.isports_app.data.repostiory;
 
-import android.content.Context;
-
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import javax.inject.Inject;
+
 import beadando.isports_app.domain.User;
-import beadando.isports_app.util.SessionManager;
 
 public class AuthRepository {
     private final FirebaseAuth auth;
-    private final FirebaseFirestore db;
-    public AuthRepository() {
+    private final FirebaseFirestore firestore;
+
+    @Inject
+    public AuthRepository(FirebaseFirestore firestore) {
         auth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+        this.firestore = firestore;
     }
+
     public interface AuthCallback {
         void onSuccess(User user);
         void onFailure(Exception e);
     }
+
     public interface RegisterCallback {
         void onSuccess();
         void onFailure(Exception e);
     }
+
     public interface LogoutCallback {
         void onLogout();
     }
@@ -40,6 +44,7 @@ public class AuthRepository {
                 })
                 .addOnFailureListener(callback::onFailure);
     }
+
     public void register(String email, String password, RegisterCallback callback) {
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
@@ -50,7 +55,7 @@ public class AuthRepository {
 
                     User newUser = new User(uid, email, username, searchName, timestamp, timestamp);
 
-                    db.collection("users").document(uid).set(newUser)
+                    firestore.collection("users").document(uid).set(newUser)
                             .addOnSuccessListener(aVoid -> callback.onSuccess())
                             .addOnFailureListener(callback::onFailure);
                 })

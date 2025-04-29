@@ -12,4 +12,51 @@
     <string name="enter_age">Add meg a korod</string>
     <string name="enter_description">Add meg a leírást</string>
     <string name="save_changes">Mentés</string>
+
+
+    <string name="error_event_title_required">Az esemény címének megadása kötelező</string>
+    <string name="error_event_title_too_long">Az esemény címe túl hosszú</string>
+    <string name="error_event_title_too_short">Az esemény címe túl rövid</string>
+
+    <string name="error_event_type_required">Sportág kiválasztása kötelező</string>
+
+    <string name="error_event_location_required">A helyszín megadása kötelező</string>
+    <string name="error_event_location_too_long">A helyszín túl hosszú</string>
+    <string name="error_event_location_too_short">A helyszín túl rövid</string>
+
+    <string name="error_event_date_required">Dátum megadása kötelező</string>
+    <string name="error_event_date_invalid">Ezt a dátumot nem lehet választani</string>
+
+    <string name="error_event_participants_required">A létszám megadása kötelező</string>
+    <string name="error_event_participants_invalid">Nem megfelelő létszám</string>
+    <string name="error_event_participants_size_too_large">A létszám mérete túl nagy</string>
+    <string name="error_event_participants_size_too_small">A létszám mérete túl kicsi</string>
+
+    <string name="error_event_description_required">A leírás megadása kötelező</string>
+    <string name="error_event_description_too_long">A leírás túl hosszú</string>
+    <string name="error_event_description_too_short">A leírás túl rövid</string>
+
+    <string name="success_event_creation">Sikeres esemény létrehozása</string>
+    <string name="error_event_prefix">Hiba:</string>
+    
+    <string name="error_event_not_found">Az esemény nem található</string>"
+    <string name="error_already_applied">Már csatlakozott az eseményre</string>
+    <string name="error_event_full">Az esemény megtelt</string>
+    <string name="error_event_creator_apply">Az saját eseményhez nem lehet csatlakozni</string>
+
+    <string name="error_unknown">Ismeretlen hiba</string>
+
+
+    <string name="successful_apply">Sikeres csatlakozás</string>
+    <string name="create_event_success">Sikeres esemény létrehozása</string>
+    <string name="default_success_message">Sikeres művelet</string>
+
+
+    <string name="event_participants">%1$d / %2$d Fő</string>
+    <string name="event_fee">Fizetős</string>
+    <string name="event_free">Ingyenes</string>
+    <string name="any_option">Minden lehetőség"</string>
+
+
+
 </resources>
