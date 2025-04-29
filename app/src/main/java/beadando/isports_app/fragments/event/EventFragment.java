@@ -16,11 +16,14 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import beadando.isports_app.R;
 import beadando.isports_app.databinding.FragmentEventBinding;
 import beadando.isports_app.domain.Event;
 import beadando.isports_app.domain.User;
 import beadando.isports_app.util.DateUtils;
+import beadando.isports_app.util.SessionManager;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -29,6 +32,9 @@ public class EventFragment extends Fragment {
     private EventViewModel eventViewModel;
     private EventAdapter eventAdapter;
     private Event event;
+
+    @Inject
+    SessionManager sessionManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,6 +62,11 @@ public class EventFragment extends Fragment {
             binding.tvDescriptionValue.setText(event.getDescription());
 
             final Event finalEvent = event;
+            if (sessionManager.getUser().getUid().equals(event.getCreatedBy())){
+                binding.btnJoin.setVisibility(View.GONE);
+            }else{
+                binding.btnJoin.setVisibility(View.VISIBLE);
+            }
             binding.btnJoin.setOnClickListener(v -> applyForEvent(finalEvent));
         }
         eventViewModel.organizer.observe(getViewLifecycleOwner(), this::loadEventOwner);
@@ -79,7 +90,7 @@ public class EventFragment extends Fragment {
 
     private void applyForEvent(Event event) {
         if (event != null && event.getId() != null) {
-            eventViewModel.applyForEvent(event.getId());
+            eventViewModel.applyForEvent(event);
         }
     }
 
@@ -93,7 +104,7 @@ public class EventFragment extends Fragment {
         if (user != null){
             binding.tvOrganizerValue.setText(user.getUsername());
         }else{
-            binding.tvOrganizerValue.setText("ismeretlen");
+            binding.tvOrganizerValue.setText("n/a");
         }
     }
 

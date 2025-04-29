@@ -42,6 +42,7 @@
     <string name="error_event_not_found">Az esemény nem található</string>"
     <string name="error_already_applied">Már csatlakozott az eseményre</string>
     <string name="error_event_full">Az esemény megtelt</string>
+    <string name="error_event_creator_apply">Az saját eseményhez nem lehet csatlakozni</string>
 
     <string name="error_unknown">Ismeretlen hiba</string>
 

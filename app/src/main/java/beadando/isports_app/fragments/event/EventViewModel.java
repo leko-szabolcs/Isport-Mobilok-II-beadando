@@ -9,9 +9,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import beadando.isports_app.R;
 import beadando.isports_app.data.repostiory.EventRepository;
 import beadando.isports_app.data.repostiory.UserRepository;
+import beadando.isports_app.domain.Event;
 import beadando.isports_app.domain.User;
+import beadando.isports_app.util.SessionManager;
 import beadando.isports_app.util.callbacks.FirebaseResultCallbacks;
 import beadando.isports_app.util.mappers.ErrorMapper;
 import beadando.isports_app.util.mappers.SuccessMapper;
@@ -21,6 +24,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 public class EventViewModel extends ViewModel {
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
+    private final SessionManager sessionManager;
 
     private final MutableLiveData<Integer> _errorMessage = new MutableLiveData<>();
     public final LiveData<Integer> errorMessage = _errorMessage;
@@ -33,9 +37,14 @@ public class EventViewModel extends ViewModel {
     public final LiveData<List<User>> participants = _participants;
 
     @Inject
-    public EventViewModel(UserRepository userRepository, EventRepository eventRepository) {
+    public EventViewModel(
+            UserRepository userRepository,
+            EventRepository eventRepository,
+            SessionManager sessionManager
+    ) {
         this.userRepository = userRepository;
         this.eventRepository = eventRepository;
+        this.sessionManager = sessionManager;
     }
 
     public void getEventOrganizerUser(String organizerId){
@@ -65,8 +74,17 @@ public class EventViewModel extends ViewModel {
         });
     }
 
-    public void applyForEvent(String eventId) {
-        eventRepository.applyForEvent(eventId, new FirebaseResultCallbacks<>() {
+    public void applyForEvent(Event event) {
+        if(event.getParticipantsList().contains(sessionManager.getUser().getUid())){
+            _successMessage.postValue(R.string.error_already_applied);
+            return;
+        }
+        if(event.getCreatedBy().equals(sessionManager.getUser().getUid())){
+            _errorMessage.postValue(R.string.error_event_creator_apply);
+            return;
+        }
+
+        eventRepository.applyForEvent(event.getId(), new FirebaseResultCallbacks<>() {
             @Override
             public void onSuccess(String result, @Nullable Void extra) {
                 _successMessage.postValue(SuccessMapper.mapSuccessCodeToMessage(result));
