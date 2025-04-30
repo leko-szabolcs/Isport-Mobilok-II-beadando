@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import java.text.DecimalFormat;
+
 import javax.inject.Inject;
 
 import beadando.isports_app.MainActivity;
@@ -39,11 +41,11 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.fullNameTextView.setText(currentUser.getUsername());
-        binding.usernameTextView.setText("username");
+        binding.fullNameTextView.setText(currentUser.getFullName());
+        binding.usernameTextView.setText(currentUser.getUsername());
         binding.emailTextView.setText(currentUser.getEmail());
-        binding.ageTextView.setText("47");
-        binding.descriptionTextView.setText("description");
+        binding.ageTextView.setText(formatAgeToDisplay(currentUser.getAge()));
+        binding.descriptionTextView.setText(currentUser.getDescription());
 
         binding.logoutButton.setOnClickListener(this::handleLogoutButton);
         binding.editButton.setOnClickListener(this::handleEditButton);
@@ -58,5 +60,10 @@ public class ProfileFragment extends Fragment {
     private void handleEditButton(View view) {
         NavController navController = NavHostFragment.findNavController(this);
         navController.navigate(R.id.action_profileFragment_to_editProfileFragment);
+    }
+
+    private String formatAgeToDisplay(int age){
+        DecimalFormat DFormat = new DecimalFormat("###");
+        return DFormat.format(age);
     }
 }
