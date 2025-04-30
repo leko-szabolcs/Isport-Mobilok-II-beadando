@@ -2,8 +2,8 @@
     <string name="app_name">ISport_app</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="felhasznalonev">Felhasználónév</string>
-    <string name="vezeteknev">Vezetéknév</string>
-    <string name="kor">Kor</string>
+    <string name="fullname">Név</string>
+    <string name="age">Életkor</string>
     <string name="leiras">Leírás</string>
     <string name="szerkesztes">Szerkesztés</string>
     <string name="kijelentkezes">Kijelentkezés</string>
@@ -13,7 +13,7 @@
     <string name="enter_description">Add meg a leírást</string>
     <string name="save_changes">Mentés</string>
 
-
+    <!-- Event Errors -->
     <string name="error_event_title_required">Az esemény címének megadása kötelező</string>
     <string name="error_event_title_too_long">Az esemény címe túl hosszú</string>
     <string name="error_event_title_too_short">Az esemény címe túl rövid</string>
@@ -44,19 +44,22 @@
     <string name="error_event_full">Az esemény megtelt</string>
     <string name="error_event_creator_apply">Az saját eseményhez nem lehet csatlakozni</string>
 
-    <string name="error_unknown">Ismeretlen hiba</string>
-
 
     <string name="successful_apply">Sikeres csatlakozás</string>
     <string name="create_event_success">Sikeres esemény létrehozása</string>
     <string name="default_success_message">Sikeres művelet</string>
 
-
     <string name="event_participants">%1$d / %2$d Fő</string>
     <string name="event_fee">Fizetős</string>
     <string name="event_free">Ingyenes</string>
+
+    <!--Profile Text-->
+    <string name="successful_update_name">Sikeres névváltás</string>
+    <string name="successful_update_description">Leírás modosítva</string>
+    <string name="successful_update_age">Sikeres életkor beállítás</string>
+
+    <!--General Text-->
+    <string name="error_unknown">Ismeretlen hiba</string>
     <string name="any_option">Minden lehetőség"</string>
-
-
 
 </resources>

@@ -1,4 +1,4 @@
-package beadando.isports_app.fragments;
+package beadando.isports_app.fragments.editprofile;
 
 import android.os.Bundle;
 
@@ -12,8 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
-import java.util.Calendar;
 
 import beadando.isports_app.R;
 
