@@ -85,4 +85,5 @@ public class AuthRepository {
             callback.onLogout();
         }
     }
+
 }

@@ -44,7 +44,7 @@ public class ProfileFragment extends Fragment {
         binding.fullNameTextView.setText(currentUser.getFullName());
         binding.usernameTextView.setText(currentUser.getUsername());
         binding.emailTextView.setText(currentUser.getEmail());
-        binding.ageTextView.setText(formatAgeToDisplay(currentUser.getAge()));
+        binding.ageTextView.setText(String.valueOf(currentUser.getAge()));
         binding.descriptionTextView.setText(currentUser.getDescription());
 
         binding.logoutButton.setOnClickListener(this::handleLogoutButton);
@@ -62,8 +62,4 @@ public class ProfileFragment extends Fragment {
         navController.navigate(R.id.action_profileFragment_to_editProfileFragment);
     }
 
-    private String formatAgeToDisplay(int age){
-        DecimalFormat DFormat = new DecimalFormat("###");
-        return DFormat.format(age);
-    }
 }
