@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import beadando.isports_app.data.repositories.AuthRepository;
 import beadando.isports_app.domains.User;
 import beadando.isports_app.utils.SessionManager;
+import beadando.isports_app.utils.callbacks.FirebaseAuthCallback;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
@@ -31,7 +32,7 @@ public class MainAppViewModel extends ViewModel {
 
     public void checkLoginStatus() {
         _loading.postValue(true);
-        authRepository.isLoggedIn(new AuthRepository.AuthCallback() {
+        authRepository.isLoggedIn(new FirebaseAuthCallback<>() {
             @Override
             public void onSuccess(User user) {
                 sessionManager.saveUser(user);

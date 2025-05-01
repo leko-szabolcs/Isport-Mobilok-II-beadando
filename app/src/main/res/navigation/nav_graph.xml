@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="beadando.isports_app.fragments.LoginFragment"
+        android:name="beadando.isports_app.fragments.login.LoginFragment"
         android:label="Bejelentkezés"
         tools:layout="@layout/fragment_login" >
         <action
@@ -30,7 +30,7 @@
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="beadando.isports_app.fragments.RegisterFragment"
+        android:name="beadando.isports_app.fragments.register.RegisterFragment"
         android:label="Regisztráció"
         tools:layout="@layout/fragment_register" >
         <action

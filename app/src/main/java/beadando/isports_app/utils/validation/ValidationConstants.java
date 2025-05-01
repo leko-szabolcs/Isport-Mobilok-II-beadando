@@ -1,6 +1,13 @@
 package beadando.isports_app.utils.validation;
 
 public class ValidationConstants {
+
+    public static final int AUTH_PASSWORD_MIN_LENGTH = 8;
+    public static final int AUTH_PASSWORD_MAX_LENGTH = 1028;
+    public static final int AUTH_EMAIL_MAX_LENGTH = 100;
+    public static final int AUTH_EMAIL_MIN_LENGTH = 6;
+
+
     public static final int  EVENT_TITLE_MAX_LENGTH = 100;
     public static final int  EVENT_TITLE_MIN_LENGTH = 6;
     public static final int  EVENT_lOCATION_MAX_LENGTH = 100;

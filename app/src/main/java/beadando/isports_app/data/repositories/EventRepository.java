@@ -1,11 +1,10 @@
 package beadando.isports_app.data.repositories;
 
-
-
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -22,7 +21,6 @@ import beadando.isports_app.domains.Event;
 import beadando.isports_app.domains.User;
 import beadando.isports_app.utils.SessionManager;
 import beadando.isports_app.utils.callbacks.FirebaseResultCallbacks;
-
 
 public class EventRepository {
     private final FirebaseFirestore firestore;
@@ -67,8 +65,13 @@ public class EventRepository {
                 .orderBy("date", Query.Direction.ASCENDING)
                 .limit(limit);
 
-        if (from != null)
+        if (from == null) {
+            Timestamp now = Timestamp.now();
+            query = query.whereGreaterThanOrEqualTo("date", now);
+        } else {
             query = query.startAfter(from);
+        }
+
 
         if (sportType != null && !sportType.isEmpty())
             query = query.whereEqualTo("type", sportType);
@@ -98,7 +101,7 @@ public class EventRepository {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<String> types = new ArrayList<>();
                     for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
-                        String name = doc.getString("name"); // vagy: Object name = doc.get("name");
+                        String name = doc.getString("name");
                         if (name != null) {
                             types.add(name);
                         }

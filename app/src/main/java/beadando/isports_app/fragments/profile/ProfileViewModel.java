@@ -1,5 +1,6 @@
 package beadando.isports_app.fragments.profile;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -7,7 +8,9 @@ import androidx.lifecycle.ViewModel;
 import javax.inject.Inject;
 
 import beadando.isports_app.data.repositories.AuthRepository;
+import beadando.isports_app.domains.User;
 import beadando.isports_app.utils.SessionManager;
+import beadando.isports_app.utils.callbacks.FirebaseAuthCallback;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
@@ -25,11 +28,16 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void logout() {
-        authRepository.logout(new AuthRepository.LogoutCallback() {
+        authRepository.logout(new FirebaseAuthCallback<>() {
             @Override
-            public void onLogout() {
+            public void onSuccess(@Nullable User user) {
                 sessionManager.clearSession();
                 _onLogout.postValue(true);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
             }
         });
     }
