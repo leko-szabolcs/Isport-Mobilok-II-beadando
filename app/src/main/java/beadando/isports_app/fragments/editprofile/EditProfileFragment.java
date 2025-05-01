@@ -40,12 +40,12 @@ public class EditProfileFragment extends Fragment {
         binding.descriptionEditText.setText(sessionManager.getUser().getDescription());
 
         editProfileViewModel.errorMessage.observe(getViewLifecycleOwner(), this::showMessage);
-        editProfileViewModel.successMessage.observe(getViewLifecycleOwner(), this::handleSucces);
+        editProfileViewModel.successMessage.observe(getViewLifecycleOwner(), this::handleSuccess);
 
         return binding.getRoot();
     }
 
-    private void handleSucces(Integer integer) {
+    private void handleSuccess(Integer integer) {
         showMessage(integer);
         NavController navController = NavHostFragment.findNavController(this);
         navController.navigate(R.id.action_editProfileFragment_to_profileFragment);

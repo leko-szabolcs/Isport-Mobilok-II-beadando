@@ -39,7 +39,7 @@ public class AuthRepository {
                     FirebaseUser user = authResult.getUser();
                     if (user != null) {
                         String uid = user.getUid();
-                        getUserData(uid, callback); // Session-t ne itt állítsuk be!
+                        getUserData(uid, callback);
                     }
                 })
                 .addOnFailureListener(callback::onFailure);
@@ -80,10 +80,18 @@ public class AuthRepository {
 
     public void logout(LogoutCallback callback) {
         auth.signOut();
-
         if (callback != null) {
             callback.onLogout();
         }
     }
 
+    public void isLoggedIn(AuthCallback callback) {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user != null) {
+            String uid = user.getUid();
+            getUserData(uid, callback);
+        } else {
+            callback.onFailure(new Exception("no_logged_in_user_found"));
+        }
+    }
 }

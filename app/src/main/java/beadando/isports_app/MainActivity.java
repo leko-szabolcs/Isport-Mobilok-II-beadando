@@ -1,8 +1,6 @@
 package beadando.isports_app;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -11,24 +9,21 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import javax.inject.Inject;
 
 import beadando.isports_app.data.repostiory.AuthRepository;
-import beadando.isports_app.domain.User;
 import beadando.isports_app.util.SessionManager;
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -37,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     SessionManager sessionManager;
 
+    private MainAppViewModel mainAppViewModel;
     private NavController navController;
     private AppBarConfiguration appBarConfiguration;
     private FrameLayout loadingOverlay;
@@ -49,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mainAppViewModel = new ViewModelProvider(this).get(MainAppViewModel.class);
+
+        mainAppViewModel.checkLoginStatus();
+        mainAppViewModel.isLoggedIn.observe(this, this::showFirstFragmentBasedOnLoginStatus);
+        mainAppViewModel.loading.observe(this, this::showLoading);
 
         Toolbar mainToolbar = findViewById(R.id.navToolbar);
         loadingOverlay = findViewById(R.id.loadingOverlay);
@@ -61,12 +62,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mainToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        if (sessionManager.isLoggedIn()) {
-            NavHostFragment navHostFragment =
-                    (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-            navController = navHostFragment.getNavController();
-            navController.navigate(R.id.mainFragment);
-        }
+
 
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager()
@@ -127,26 +123,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    public void showLoading(boolean show) {
-        if (show) {
+
+    private void showFirstFragmentBasedOnLoginStatus(Boolean isLoggedIn) {
+        if (isLoggedIn) {
+            navController.navigate(R.id.mainFragment);
+        } else {
+            navController.navigate(R.id.loginFragment);
+        }
+    }
+
+    public void showLoading(boolean isVisible) {
+        if (isVisible) {
             loadingOverlay.setVisibility(View.VISIBLE);
             globalProgressBar.setVisibility(View.VISIBLE);
         } else {
             loadingOverlay.setVisibility(View.GONE);
             globalProgressBar.setVisibility(View.GONE);
         }
-    }
-
-    public void logout() {
-        new AuthRepository(FirebaseFirestore.getInstance()).logout(() -> {
-            SessionManager sessionManager = new SessionManager(this);
-            sessionManager.clearSession();
-            sessionManager.setLoggedIn(false);
-
-            Toast.makeText(this, "Sikeres kijelentkezés", Toast.LENGTH_SHORT).show();
-            navController.popBackStack(R.id.loginFragment, false);
-            navController.navigate(R.id.loginFragment);
-        });
     }
 
     public void showLoadingOverlay(boolean show) {

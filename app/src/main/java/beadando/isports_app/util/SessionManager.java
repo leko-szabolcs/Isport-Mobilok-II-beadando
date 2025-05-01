@@ -100,6 +100,25 @@ public class SessionManager {
         return new User(uid, email, username,fullName,description,age, searchName, createdAt, lastOnline);
     }
 
+    public String updateFullName(String fullName) {
+        editor.putString(KEY_USER_FULL_NAME, fullName);
+        editor.apply();
+        return fullName;
+    }
+
+    public String updateDescription(String description) {
+        editor.putString(KEY_USER_DESCRIPTION, description);
+        editor.apply();
+        return description;
+    }
+
+    public int updateAge(int age) {
+        editor.putInt(KEY_USER_AGE, age);
+        editor.apply();
+        return age;
+    }
+
+
     public String getUserUid() {
         return prefs.getString(KEY_USER_UID, null);
     }

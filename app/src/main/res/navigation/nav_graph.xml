@@ -48,7 +48,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="beadando.isports_app.fragments.ProfileFragment"
+        android:name="beadando.isports_app.fragments.profile.ProfileFragment"
         android:label="Profile">
         <action
             android:id="@+id/action_profileFragment_to_editProfileFragment"
