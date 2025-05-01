@@ -1,5 +1,7 @@
 package beadando.isports_app.fragments.event;
 
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -76,9 +78,10 @@ public class EventViewModel extends ViewModel {
 
     public void applyForEvent(Event event) {
         if(event.getParticipantsList().contains(sessionManager.getUser().getUid())){
-            _successMessage.postValue(R.string.error_already_applied);
+            _errorMessage.postValue(R.string.error_already_applied);
             return;
         }
+
         if(event.getCreatedBy().equals(sessionManager.getUser().getUid())){
             _errorMessage.postValue(R.string.error_event_creator_apply);
             return;

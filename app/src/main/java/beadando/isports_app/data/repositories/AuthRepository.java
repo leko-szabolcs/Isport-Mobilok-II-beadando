@@ -8,32 +8,19 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import javax.inject.Inject;
 
 import beadando.isports_app.domains.User;
+import beadando.isports_app.utils.callbacks.FirebaseAuthCallback;
 
 public class AuthRepository {
     private final FirebaseAuth auth;
     private final FirebaseFirestore firestore;
 
     @Inject
-    public AuthRepository(FirebaseFirestore firestore) {
-        auth = FirebaseAuth.getInstance();
+    public AuthRepository(FirebaseFirestore firestore, FirebaseAuth auth) {
+        this.auth = auth;
         this.firestore = firestore;
     }
 
-    public interface AuthCallback {
-        void onSuccess(User user);
-        void onFailure(Exception e);
-    }
-
-    public interface RegisterCallback {
-        void onSuccess();
-        void onFailure(Exception e);
-    }
-
-    public interface LogoutCallback {
-        void onLogout();
-    }
-
-    public void login(String email, String password, AuthCallback callback) {
+    public void login(String email, String password, FirebaseAuthCallback<User> callback) {
         auth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
                     FirebaseUser user = authResult.getUser();
@@ -45,7 +32,7 @@ public class AuthRepository {
                 .addOnFailureListener(callback::onFailure);
     }
 
-    public void register(String email, String password, RegisterCallback callback) {
+    public void register(String email, String password, FirebaseAuthCallback<Void> callback) {
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
                     String uid = authResult.getUser().getUid();
@@ -56,13 +43,13 @@ public class AuthRepository {
                     User newUser = new User(uid, email, username,"","",0, searchName, timestamp, timestamp);
 
                     firestore.collection("users").document(uid).set(newUser)
-                            .addOnSuccessListener(aVoid -> callback.onSuccess())
+                            .addOnSuccessListener(callback::onSuccess)
                             .addOnFailureListener(callback::onFailure);
                 })
                 .addOnFailureListener(callback::onFailure);
     }
 
-    public void getUserData(String uid, AuthCallback callback) {
+    public void getUserData(String uid, FirebaseAuthCallback<User> callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("users").document(uid)
@@ -78,14 +65,12 @@ public class AuthRepository {
                 .addOnFailureListener(callback::onFailure);
     }
 
-    public void logout(LogoutCallback callback) {
+    public void logout(FirebaseAuthCallback<User> callback) {
         auth.signOut();
-        if (callback != null) {
-            callback.onLogout();
-        }
+        callback.onSuccess(null);
     }
 
-    public void isLoggedIn(AuthCallback callback) {
+    public void isLoggedIn(FirebaseAuthCallback<User> callback) {
         FirebaseUser user = auth.getCurrentUser();
         if (user != null) {
             String uid = user.getUid();

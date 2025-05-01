@@ -55,6 +55,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
         public void bind(User user) {
             binding.textParticipantsUsername.setText(user.getUsername());
+            binding.textParticipantsFullName.setText(user.getFullName());
         }
     }
 }

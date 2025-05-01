@@ -89,7 +89,7 @@ public class EventFragment extends Fragment {
     }
 
     private void applyForEvent(Event event) {
-        if (event != null && event.getId() != null) {
+        if (event != null && event.getId() != null ) {
             eventViewModel.applyForEvent(event);
         }
     }

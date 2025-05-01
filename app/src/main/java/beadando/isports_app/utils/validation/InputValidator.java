@@ -1,82 +1,57 @@
 package beadando.isports_app.utils.validation;
 
-import android.content.Context;
 import android.util.Patterns;
+
+import beadando.isports_app.R;
 
 public class InputValidator {
 
-    public static final int PASSWORD_MIN_LENGTH = 8;
-    public static final int PASSWORD_MAX_LENGTH = 250;
-    public static final int EMAIL_MAX_LENGTH = 50;
-
-    public static boolean isValidEmail(Context context, String email) {
-        if (email.isEmpty()) {
-            toast(context, "Az email mező nem lehet üres");
-            return false;
+    public static void isValidEmail(String email) throws ValidationException {
+        if (email.isEmpty() || email.trim().isEmpty()) {
+            throw new ValidationException(Integer.toString(R.string.error_email_required));
         }
 
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            toast(context, "Nem megfelelő email formátum");
-            return false;
+            throw new ValidationException(Integer.toString(R.string.error_email_invalid));
         }
 
-        if (email.length() > EMAIL_MAX_LENGTH) {
-            toast(context, "Túl hosszú email cím");
-            return false;
+        if (email.length() > ValidationConstants.AUTH_EMAIL_MAX_LENGTH) {
+            throw new ValidationException(Integer.toString(R.string.error_email_too_long));
         }
 
-        return true;
+        if (email.length() < ValidationConstants.AUTH_EMAIL_MIN_LENGTH) {
+            throw new ValidationException(Integer.toString(R.string.error_email_too_short));
+        }
     }
 
-    public static boolean isValidPassword(Context context, String password) {
-        if (password.isEmpty()) {
-            toast(context, "A jelszó nem lehet üres");
-            return false;
+    public static void isValidPassword(String password) throws ValidationException {
+        if (password.isEmpty() || password.trim().isEmpty()) {
+            throw new ValidationException(Integer.toString(R.string.error_password_required));
         }
 
-        if (password.length() < PASSWORD_MIN_LENGTH) {
-            toast(context, "A jelszónak legalább " + PASSWORD_MIN_LENGTH + " karakter hosszúnak kell lennie");
-            return false;
+        if (password.length() < ValidationConstants.AUTH_PASSWORD_MIN_LENGTH) {
+            throw new ValidationException(Integer.toString(R.string.error_password_too_short));
         }
 
-        if (password.length() > PASSWORD_MAX_LENGTH) {
-            toast(context, "A jelszó túl hosszú");
-            return false;
+        if (password.length() > ValidationConstants.AUTH_PASSWORD_MAX_LENGTH) {
+            throw new ValidationException(Integer.toString(R.string.error_password_too_long));
         }
-
-        return true;
     }
 
-    public static boolean doPasswordsMatch(Context context, String pw1, String pw2) {
-        if (!pw1.equals(pw2)) {
-            toast(context, "A jelszavak nem egyeznek");
-            return false;
+    public static void doPasswordsMatch(String password, String passwordAgain) throws ValidationException {
+        if (!password.equals(passwordAgain)) {
+            throw new ValidationException(Integer.toString(R.string.error_password_not_match));
         }
-        return true;
     }
 
-    public static boolean isRegistrationValid(Context context, String email, String password, String confirmPassword) {
-        return isValidEmail(context, email)
-                && isValidPassword(context, password)
-                && doPasswordsMatch(context, password, confirmPassword);
+    public static void isRegistrationValid( String email, String password, String passwordAgain) throws ValidationException {
+        isValidEmail(email);
+        isValidPassword(password);
+        doPasswordsMatch(password, passwordAgain);
     }
 
-    public static boolean isValidEmailLogin(Context context, String email) {
-        if (email.isEmpty()) {
-            toast(context, "Az email mező nem lehet üres");
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean isLoginValid(Context context, String email, String password) {
-        return isValidEmail(context, email)
-                && isValidPassword(context, password)
-                && isValidEmailLogin(context, email);
-    }
-
-
-    private static void toast(Context context, String msg) {
-        android.widget.Toast.makeText(context, msg, android.widget.Toast.LENGTH_SHORT).show();
+    public static void isLoginValid(String email, String password) throws ValidationException {
+        isValidEmail(email);
+        isValidPassword(password);
     }
 }

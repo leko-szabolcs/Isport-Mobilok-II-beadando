@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
 
@@ -123,9 +124,17 @@ public class MainActivity extends AppCompatActivity {
         if (navController.getCurrentDestination() == null) return;
         int currentId = navController.getCurrentDestination().getId();
         if (isLoggedIn  && currentId != R.id.mainFragment) {
-            navController.navigate(R.id.mainFragment);
+            navController.navigate(R.id.mainFragment,
+                    null,
+                    new NavOptions.Builder()
+                            .setPopUpTo(R.id.mainFragment, true)
+                            .build());
         } else if (!isLoggedIn && currentId != R.id.loginFragment){
-            navController.navigate(R.id.loginFragment);
+            navController.navigate(R.id.loginFragment,
+                    null,
+                    new NavOptions.Builder()
+                            .setPopUpTo(R.id.loginFragment, true)
+                            .build());
         }
     }
 

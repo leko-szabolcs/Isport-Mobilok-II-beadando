@@ -13,6 +13,7 @@ import beadando.isports_app.R;
 import beadando.isports_app.databinding.ItemEventBinding;
 import beadando.isports_app.domains.Event;
 import beadando.isports_app.utils.DateUtils;
+import beadando.isports_app.utils.mappers.SportIconMapper;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder> {
     private final List<Event> eventList = new ArrayList<>();
@@ -71,7 +72,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
                             event.getParticipants()
                     ));
             binding.textEventDate.setText(DateUtils.formatFirebaseTimestampForDisplay(event.getDate()));
-            binding.imageEventType.setImageResource(R.drawable.ic_sport_logo);
+            binding.imageEventType.setImageResource(SportIconMapper.mapSportToIcon(event.getType()));
         }
     }
 }
