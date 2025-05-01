@@ -1,4 +1,4 @@
-package beadando.isports_app.util;
+package beadando.isports_app.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,11 +10,7 @@ import java.util.Date;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import beadando.isports_app.domain.User;
-import dagger.Module;
-import dagger.Provides;
-import dagger.hilt.InstallIn;
-import dagger.hilt.components.SingletonComponent;
+import beadando.isports_app.domains.User;
 
 @Singleton
 public class SessionManager {

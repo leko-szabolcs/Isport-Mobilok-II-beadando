@@ -1,4 +1,4 @@
-package beadando.isports_app.util.mappers;
+package beadando.isports_app.utils.mappers;
 
 import androidx.annotation.StringRes;
 

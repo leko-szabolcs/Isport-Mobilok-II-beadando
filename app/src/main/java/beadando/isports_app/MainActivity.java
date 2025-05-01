@@ -2,29 +2,23 @@ package beadando.isports_app;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
 
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import javax.inject.Inject;
 
-import beadando.isports_app.data.repostiory.AuthRepository;
-import beadando.isports_app.util.SessionManager;
+import beadando.isports_app.controllers.ToolbarController;
+import beadando.isports_app.databinding.ActivityMainBinding;
+import beadando.isports_app.fragments.UIViewModel;
+import beadando.isports_app.utils.SessionManager;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -33,27 +27,31 @@ public class MainActivity extends AppCompatActivity {
     SessionManager sessionManager;
 
     private MainAppViewModel mainAppViewModel;
+    private UIViewModel uiViewModel;
+    private ActivityMainBinding binding;
     private NavController navController;
-    private AppBarConfiguration appBarConfiguration;
-    private FrameLayout loadingOverlay;
-    private ProgressBar globalProgressBar;
     private ImageView profileImageView;
     private TextView toolbarTitle;
     private ImageButton addEventButton;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         mainAppViewModel = new ViewModelProvider(this).get(MainAppViewModel.class);
+        uiViewModel = new ViewModelProvider(this).get(UIViewModel.class);
 
         mainAppViewModel.checkLoginStatus();
-        mainAppViewModel.isLoggedIn.observe(this, this::showFirstFragmentBasedOnLoginStatus);
-        mainAppViewModel.loading.observe(this, this::showLoading);
+        mainAppViewModel.isLoggedIn.observe(this, this::showFragmentBasedOnLoginStatus);
+        mainAppViewModel.loading.observe(this, this::setLoadingOverlay);
+        uiViewModel.loadingOverlay.observe(this, this::showLoadingOverlay);
 
+        // Initialize toolbar
         Toolbar mainToolbar = findViewById(R.id.navToolbar);
-        loadingOverlay = findViewById(R.id.loadingOverlay);
-        globalProgressBar = findViewById(R.id.globalProgressBar);
 
         profileImageView = mainToolbar.findViewById(R.id.profileImageView);
         toolbarTitle = mainToolbar.findViewById(R.id.toolbarTitle);
@@ -63,21 +61,18 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
-
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager()
                         .findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
 
-        appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.mainFragment
-        ).build();
 
         if (profileImageView != null) {
             profileImageView.setOnClickListener(v -> {
                 navController.navigate(R.id.profileFragment);
             });
         }
+
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.loginFragment || destination.getId() == R.id.registerFragment) {
@@ -124,26 +119,25 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void showFirstFragmentBasedOnLoginStatus(Boolean isLoggedIn) {
-        if (isLoggedIn) {
+    private void showFragmentBasedOnLoginStatus(Boolean isLoggedIn) {
+        if (navController.getCurrentDestination() == null) return;
+        int currentId = navController.getCurrentDestination().getId();
+        if (isLoggedIn  && currentId != R.id.mainFragment) {
             navController.navigate(R.id.mainFragment);
-        } else {
+        } else if (!isLoggedIn && currentId != R.id.loginFragment){
             navController.navigate(R.id.loginFragment);
         }
     }
 
-    public void showLoading(boolean isVisible) {
+    private void setLoadingOverlay(boolean isVisible) {
         if (isVisible) {
-            loadingOverlay.setVisibility(View.VISIBLE);
-            globalProgressBar.setVisibility(View.VISIBLE);
-        } else {
-            loadingOverlay.setVisibility(View.GONE);
-            globalProgressBar.setVisibility(View.GONE);
+            uiViewModel.showLoadingOverlay();
+        }else{
+            uiViewModel.hideLoadingOverlay();
         }
     }
 
-    public void showLoadingOverlay(boolean show) {
-        FrameLayout loadingOverlay = findViewById(R.id.loadingOverlay);
-        loadingOverlay.setVisibility(show ? View.VISIBLE : View.GONE);
+    public void showLoadingOverlay(boolean isVisible) {
+        binding.loadingOverlay.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 }

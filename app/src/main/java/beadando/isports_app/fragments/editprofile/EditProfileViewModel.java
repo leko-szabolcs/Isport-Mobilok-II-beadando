@@ -7,12 +7,12 @@ import androidx.lifecycle.ViewModel;
 import javax.inject.Inject;
 
 import beadando.isports_app.R;
-import beadando.isports_app.data.repostiory.ProfileRepository;
-import beadando.isports_app.util.SessionManager;
-import beadando.isports_app.util.callbacks.FirebaseResultCallbacks;
-import beadando.isports_app.util.mappers.ErrorMapper;
-import beadando.isports_app.util.validation.ProfileValidator;
-import beadando.isports_app.util.validation.ValidationException;
+import beadando.isports_app.data.repositories.ProfileRepository;
+import beadando.isports_app.utils.SessionManager;
+import beadando.isports_app.utils.callbacks.FirebaseResultCallbacks;
+import beadando.isports_app.utils.mappers.ErrorMapper;
+import beadando.isports_app.utils.validation.ProfileValidator;
+import beadando.isports_app.utils.validation.ValidationException;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel

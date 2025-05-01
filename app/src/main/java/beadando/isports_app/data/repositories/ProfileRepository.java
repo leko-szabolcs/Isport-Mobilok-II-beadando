@@ -1,11 +1,11 @@
-package beadando.isports_app.data.repostiory;
+package beadando.isports_app.data.repositories;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import javax.inject.Inject;
 
-import beadando.isports_app.util.SessionManager;
-import beadando.isports_app.util.callbacks.FirebaseResultCallbacks;
+import beadando.isports_app.utils.SessionManager;
+import beadando.isports_app.utils.callbacks.FirebaseResultCallbacks;
 
 public class ProfileRepository {
     private final FirebaseFirestore firestore;

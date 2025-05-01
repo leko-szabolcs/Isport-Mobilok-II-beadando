@@ -1,4 +1,4 @@
-package beadando.isports_app.data.repostiory;
+package beadando.isports_app.data.repositories;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -7,7 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import javax.inject.Inject;
 
-import beadando.isports_app.domain.User;
+import beadando.isports_app.domains.User;
 
 public class AuthRepository {
     private final FirebaseAuth auth;

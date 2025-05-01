@@ -1,6 +1,4 @@
-package beadando.isports_app.util.validation;
-
-import android.content.Context;
+package beadando.isports_app.utils.validation;
 
 import beadando.isports_app.R;
 

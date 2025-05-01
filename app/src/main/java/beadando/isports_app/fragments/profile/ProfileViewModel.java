@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel;
 
 import javax.inject.Inject;
 
-import beadando.isports_app.data.repostiory.AuthRepository;
-import beadando.isports_app.util.SessionManager;
+import beadando.isports_app.data.repositories.AuthRepository;
+import beadando.isports_app.utils.SessionManager;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel

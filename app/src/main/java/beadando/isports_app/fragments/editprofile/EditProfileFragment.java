@@ -12,14 +12,13 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import javax.inject.Inject;
 
 import beadando.isports_app.R;
 import beadando.isports_app.databinding.FragmentEditProfileBinding;
-import beadando.isports_app.util.SessionManager;
+import beadando.isports_app.utils.SessionManager;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint

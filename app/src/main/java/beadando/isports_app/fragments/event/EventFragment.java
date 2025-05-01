@@ -20,10 +20,10 @@ import javax.inject.Inject;
 
 import beadando.isports_app.R;
 import beadando.isports_app.databinding.FragmentEventBinding;
-import beadando.isports_app.domain.Event;
-import beadando.isports_app.domain.User;
-import beadando.isports_app.util.DateUtils;
-import beadando.isports_app.util.SessionManager;
+import beadando.isports_app.domains.Event;
+import beadando.isports_app.domains.User;
+import beadando.isports_app.utils.DateUtils;
+import beadando.isports_app.utils.SessionManager;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
