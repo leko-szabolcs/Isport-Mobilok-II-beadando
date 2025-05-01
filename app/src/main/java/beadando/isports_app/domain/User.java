@@ -7,21 +7,50 @@ public class User {
     private String uid;
     private String email;
     private String username;
+    private String fullName;
+    private String description;
+    private int age;
     private String searchName;
     private Timestamp createdAt;
     private Timestamp lastOnline;
 
     public User() {}
 
-    public User(String uid, String email, String username, String searchName, Timestamp lastOnline, Timestamp createdAt) {
+    public User(String uid, String email, String username, String fullName, String description, int age, String searchName, Timestamp lastOnline, Timestamp createdAt) {
         this.uid = uid;
         this.email = email;
         this.username = username;
+        this.fullName = fullName;
+        this.description = description;
+        this.age = age;
         this.searchName = searchName;
         this.lastOnline = lastOnline;
         this.createdAt = createdAt;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
 
     public String getUid() {
         return uid;

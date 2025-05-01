@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
-        android:text="@string/vezeteknev"
+        android:text="@string/fullname"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/profileImageCard"
@@ -87,7 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
-        android:text="@string/kor"
+        android:text="@string/age"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/profileImageCard"
@@ -137,6 +137,7 @@
             android:background="@android:color/white">
 
             <TextView
+                android:id="@+id/descriptionTextView"
                 android:layout_width="match_parent"
                 android:layout_height="155dp"
                 android:text="@string/leiras"

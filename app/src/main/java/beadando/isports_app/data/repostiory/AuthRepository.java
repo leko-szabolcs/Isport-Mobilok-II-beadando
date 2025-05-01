@@ -53,7 +53,7 @@ public class AuthRepository {
                     String searchName = username.toLowerCase();
                     Timestamp timestamp = Timestamp.now();
 
-                    User newUser = new User(uid, email, username, searchName, timestamp, timestamp);
+                    User newUser = new User(uid, email, username,"","",0, searchName, timestamp, timestamp);
 
                     firestore.collection("users").document(uid).set(newUser)
                             .addOnSuccessListener(aVoid -> callback.onSuccess())
@@ -85,4 +85,5 @@ public class AuthRepository {
             callback.onLogout();
         }
     }
+
 }

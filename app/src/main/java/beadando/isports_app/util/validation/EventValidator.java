@@ -9,7 +9,7 @@ import beadando.isports_app.R;
 
 public class EventValidator {
 
-    public static void isValidEvent(
+        public static void isValidEvent(
             Context context,
             String title,
             String type,
@@ -108,12 +108,6 @@ public class EventValidator {
         }
         if (description.length() < ValidationConstants.EVENT_DESCRIPTION_MIN_LENGTH) {
             throw new ValidationException(context.getString(R.string.error_event_description_too_short));
-        }
-    }
-
-    public static class ValidationException extends Exception {
-        public ValidationException(String message) {
-            super(message);
         }
     }
 

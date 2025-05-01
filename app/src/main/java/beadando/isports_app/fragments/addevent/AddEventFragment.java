@@ -35,6 +35,7 @@ import beadando.isports_app.domain.User;
 import beadando.isports_app.fragments.SharedViewModel;
 import beadando.isports_app.util.SessionManager;
 import beadando.isports_app.util.validation.EventValidator;
+import beadando.isports_app.util.validation.ValidationException;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -158,7 +159,7 @@ public class AddEventFragment extends Fragment {
 
             Event event = new Event(title, type, location, date, fee, participants, description, user.getUid(), new ArrayList<>());
             addEventViewModel.saveEvent(event);
-        } catch (EventValidator.ValidationException e) {
+        } catch (ValidationException e) {
             Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
