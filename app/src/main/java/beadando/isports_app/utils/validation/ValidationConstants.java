@@ -1,4 +1,4 @@
-package beadando.isports_app.util.validation;
+package beadando.isports_app.utils.validation;
 
 public class ValidationConstants {
     public static final int  EVENT_TITLE_MAX_LENGTH = 100;

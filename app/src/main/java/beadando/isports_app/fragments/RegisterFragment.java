@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
@@ -16,19 +17,20 @@ import android.widget.Toast;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import beadando.isports_app.R;
-import beadando.isports_app.data.repostiory.AuthRepository;
-
-import beadando.isports_app.MainActivity;
+import beadando.isports_app.data.repositories.AuthRepository;
 
 public class RegisterFragment extends Fragment {
 
+    private UIViewModel uiViewModel;
     private AuthRepository auth;
     private RegisterAdapter formAdapter;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
+        uiViewModel = new ViewModelProvider(requireActivity()).get(UIViewModel.class);
 
         auth = new AuthRepository(FirebaseFirestore.getInstance());
 
@@ -39,13 +41,12 @@ public class RegisterFragment extends Fragment {
         formAdapter = new RegisterAdapter(etUsername, etPassword, etPasswordAgain);
 
         view.findViewById(R.id.btnRegister).setOnClickListener(v ->{
-            if (!formAdapter.isValidRegistration(getContext())) return;
-            ((MainActivity) requireActivity()).showLoading(true);
+            uiViewModel.showLoadingOverlay();
 
             auth.register(formAdapter.getEmail(), formAdapter.getPassword(), new AuthRepository.RegisterCallback() {
                 @Override
                 public void onSuccess() {
-                    ((MainActivity) requireActivity()).showLoading(false);
+                    uiViewModel.hideLoadingOverlay();
                     Toast.makeText(getContext(), "Sikeres regisztráció", Toast.LENGTH_SHORT).show();
                     Navigation.findNavController(view)
                             .navigate(R.id.action_registerFragment_to_loginFragment);
@@ -53,7 +54,7 @@ public class RegisterFragment extends Fragment {
 
                 @Override
                 public void onFailure(Exception e) {
-                    ((MainActivity) requireActivity()).showLoading(false);
+                    uiViewModel.hideLoadingOverlay();
                     Toast.makeText(getContext(), "Hiba: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });

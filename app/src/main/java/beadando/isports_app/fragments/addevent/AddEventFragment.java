@@ -27,15 +27,14 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import beadando.isports_app.MainActivity;
-import beadando.isports_app.R;
 import beadando.isports_app.databinding.FragmentAddEventBinding;
-import beadando.isports_app.domain.Event;
-import beadando.isports_app.domain.User;
+import beadando.isports_app.domains.Event;
+import beadando.isports_app.domains.User;
 import beadando.isports_app.fragments.SharedViewModel;
-import beadando.isports_app.util.SessionManager;
-import beadando.isports_app.util.validation.EventValidator;
-import beadando.isports_app.util.validation.ValidationException;
+import beadando.isports_app.fragments.UIViewModel;
+import beadando.isports_app.utils.SessionManager;
+import beadando.isports_app.utils.validation.EventValidator;
+import beadando.isports_app.utils.validation.ValidationException;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -49,12 +48,14 @@ public class AddEventFragment extends Fragment {
     private Calendar calendar;
     private EventValidator eventValidator;
     private ArrayAdapter<String> sportTypeAdapter;
+    private UIViewModel uiViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAddEventBinding.inflate(inflater, container, false);
         addEventViewModel = new ViewModelProvider(this).get(AddEventViewModel.class);
         sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
+        uiViewModel = new ViewModelProvider(requireActivity()).get(UIViewModel.class);
         eventValidator = new EventValidator();
         setupSportTypesSpinner();
 
@@ -176,8 +177,13 @@ public class AddEventFragment extends Fragment {
     }
 
     private void handleLoadingState(Boolean isLoading) {
+
         binding.btnUpload.setEnabled(!isLoading);
-        ((MainActivity) requireActivity()).showLoadingOverlay(isLoading);
+        if (isLoading) {
+            uiViewModel.showLoadingOverlay();
+        } else {
+            uiViewModel.hideLoadingOverlay();
+        }
     }
 
     private void handleSaveSuccess(int resId) {

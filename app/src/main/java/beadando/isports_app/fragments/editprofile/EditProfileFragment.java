@@ -12,14 +12,13 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import javax.inject.Inject;
 
 import beadando.isports_app.R;
 import beadando.isports_app.databinding.FragmentEditProfileBinding;
-import beadando.isports_app.util.SessionManager;
+import beadando.isports_app.utils.SessionManager;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -40,12 +39,12 @@ public class EditProfileFragment extends Fragment {
         binding.descriptionEditText.setText(sessionManager.getUser().getDescription());
 
         editProfileViewModel.errorMessage.observe(getViewLifecycleOwner(), this::showMessage);
-        editProfileViewModel.successMessage.observe(getViewLifecycleOwner(), this::handleSucces);
+        editProfileViewModel.successMessage.observe(getViewLifecycleOwner(), this::handleSuccess);
 
         return binding.getRoot();
     }
 
-    private void handleSucces(Integer integer) {
+    private void handleSuccess(Integer integer) {
         showMessage(integer);
         NavController navController = NavHostFragment.findNavController(this);
         navController.navigate(R.id.action_editProfileFragment_to_profileFragment);

@@ -1,4 +1,4 @@
-package beadando.isports_app.data.repostiory;
+package beadando.isports_app.data.repositories;
 
 
 
@@ -18,10 +18,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import beadando.isports_app.domain.Event;
-import beadando.isports_app.domain.User;
-import beadando.isports_app.util.SessionManager;
-import beadando.isports_app.util.callbacks.FirebaseResultCallbacks;
+import beadando.isports_app.domains.Event;
+import beadando.isports_app.domains.User;
+import beadando.isports_app.utils.SessionManager;
+import beadando.isports_app.utils.callbacks.FirebaseResultCallbacks;
 
 
 public class EventRepository {

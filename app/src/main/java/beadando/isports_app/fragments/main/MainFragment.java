@@ -1,7 +1,6 @@
 package beadando.isports_app.fragments.main;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import beadando.isports_app.MainActivity;
 import beadando.isports_app.R;
 import beadando.isports_app.databinding.FragmentMainBinding;
-import beadando.isports_app.domain.Event;
+import beadando.isports_app.domains.Event;
 import beadando.isports_app.fragments.SharedViewModel;
-import beadando.isports_app.fragments.event.EventViewModel;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint

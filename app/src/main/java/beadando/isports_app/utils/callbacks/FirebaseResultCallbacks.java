@@ -1,4 +1,4 @@
-package beadando.isports_app.util.callbacks;
+package beadando.isports_app.utils.callbacks;
 
 import androidx.annotation.Nullable;
 

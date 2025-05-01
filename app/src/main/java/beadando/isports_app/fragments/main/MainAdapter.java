@@ -11,8 +11,8 @@ import java.util.List;
 
 import beadando.isports_app.R;
 import beadando.isports_app.databinding.ItemEventBinding;
-import beadando.isports_app.domain.Event;
-import beadando.isports_app.util.DateUtils;
+import beadando.isports_app.domains.Event;
+import beadando.isports_app.utils.DateUtils;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder> {
     private final List<Event> eventList = new ArrayList<>();

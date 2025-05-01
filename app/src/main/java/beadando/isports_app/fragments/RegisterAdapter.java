@@ -2,7 +2,7 @@ package beadando.isports_app.fragments;
 
 import android.widget.EditText;
 
-import beadando.isports_app.util.validation.InputValidator;
+import beadando.isports_app.utils.validation.InputValidator;
 
 /**
  * Ez az "adapter" osztály segít az űrlap mezők kezelésében.

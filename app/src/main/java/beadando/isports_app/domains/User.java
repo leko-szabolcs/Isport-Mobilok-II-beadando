@@ -1,4 +1,4 @@
-package beadando.isports_app.domain;
+package beadando.isports_app.domains;
 
 import com.google.firebase.Timestamp;
 

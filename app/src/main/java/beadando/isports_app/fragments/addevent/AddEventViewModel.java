@@ -5,18 +5,13 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
-import beadando.isports_app.data.repostiory.EventRepository;
-import beadando.isports_app.domain.Event;
-import beadando.isports_app.util.callbacks.FirebaseResultCallbacks;
-import beadando.isports_app.util.mappers.ErrorMapper;
-import beadando.isports_app.util.mappers.SuccessMapper;
+import beadando.isports_app.data.repositories.EventRepository;
+import beadando.isports_app.domains.Event;
+import beadando.isports_app.utils.callbacks.FirebaseResultCallbacks;
+import beadando.isports_app.utils.mappers.ErrorMapper;
+import beadando.isports_app.utils.mappers.SuccessMapper;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel

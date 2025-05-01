@@ -4,7 +4,7 @@ import android.content.Context;
 
 import javax.inject.Singleton;
 
-import beadando.isports_app.util.SessionManager;
+import beadando.isports_app.utils.SessionManager;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;

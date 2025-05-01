@@ -1,4 +1,4 @@
-package beadando.isports_app.util;
+package beadando.isports_app.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,11 +10,7 @@ import java.util.Date;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import beadando.isports_app.domain.User;
-import dagger.Module;
-import dagger.Provides;
-import dagger.hilt.InstallIn;
-import dagger.hilt.components.SingletonComponent;
+import beadando.isports_app.domains.User;
 
 @Singleton
 public class SessionManager {
@@ -99,6 +95,25 @@ public class SessionManager {
         }
         return new User(uid, email, username,fullName,description,age, searchName, createdAt, lastOnline);
     }
+
+    public String updateFullName(String fullName) {
+        editor.putString(KEY_USER_FULL_NAME, fullName);
+        editor.apply();
+        return fullName;
+    }
+
+    public String updateDescription(String description) {
+        editor.putString(KEY_USER_DESCRIPTION, description);
+        editor.apply();
+        return description;
+    }
+
+    public int updateAge(int age) {
+        editor.putInt(KEY_USER_AGE, age);
+        editor.apply();
+        return age;
+    }
+
 
     public String getUserUid() {
         return prefs.getString(KEY_USER_UID, null);
