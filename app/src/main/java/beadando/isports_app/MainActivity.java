@@ -90,7 +90,9 @@ public class MainActivity extends AppCompatActivity {
                         toolbarTitle.setText("Új esemény");
                     } else if (destination.getId() == R.id.editProfileFragment) {
                         toolbarTitle.setText("Profil szerkesztés");
-                    } else {
+                    } else if (destination.getId() == R.id.eventFragment) {
+                        toolbarTitle.setText("Esemény");
+                    }else {
                         toolbarTitle.setText(destination.getLabel());
                     }
                 }
@@ -104,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (addEventButton != null) {
-                    if (destination.getId() == R.id.profileFragment || destination.getId() == R.id.addEventFragment || destination.getId() == R.id.editProfileFragment) {
+                    if (destination.getId() == R.id.eventFragment || destination.getId() == R.id.profileFragment || destination.getId() == R.id.addEventFragment || destination.getId() == R.id.editProfileFragment) {
                         addEventButton.setImageResource(R.drawable.ic_back);
                         addEventButton.setOnClickListener(v -> {
                             navController.navigate(R.id.mainFragment);
